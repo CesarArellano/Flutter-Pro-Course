@@ -21,7 +21,7 @@ class ChatScreen extends StatelessWidget {
         leading: const Padding(
           padding: EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundImage: NetworkImage('https://media.licdn.com/dms/image/D5603AQE_CpTZ1Y3iAg/profile-displayphoto-shrink_200_200/0/1684859001190?e=1690416000&v=beta&t=4ozZSpbSn-xO-hz3M00iEL50nu_anOQEd7xL7jUsFgY'),
+            backgroundImage: NetworkImage('https://media.licdn.com/dms/image/D5603AQFmKInGCmwDYg/profile-displayphoto-shrink_200_200/0/1685327552130?e=1691625600&v=beta&t=Cmbdjx00OC_qDdi3LGPSGpqt9m7vmQGHFrt2_XXJ3Do'),
           ),
         ),
       ),

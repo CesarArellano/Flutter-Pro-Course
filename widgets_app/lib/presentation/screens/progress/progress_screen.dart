@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
@@ -46,7 +45,6 @@ class _ControlledProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: Stream.periodic(const Duration( milliseconds: 300 ), (value) {
-        log(value.toString());
         return (value * 2) / 100;
       }).takeWhile((value) => value < 100),
       builder: (context, snapshot) {

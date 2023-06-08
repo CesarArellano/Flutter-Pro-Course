@@ -19,6 +19,12 @@ class MenuItem {
 
 const appMenuItems = <MenuItem>[
   MenuItem(
+    title: 'Counter',
+    subtitle: 'Default Counter',
+    link: CounterScreen.name,
+    icon: Icons.numbers
+  ),
+  MenuItem(
     title: 'Buttons',
     subtitle: 'Several buttons in Flutter',
     link: ButtonsScreen.name,
