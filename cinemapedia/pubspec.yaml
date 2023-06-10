@@ -38,6 +38,7 @@ dependencies:
   go_router: ^8.0.1
   flutter_dotenv: ^5.1.0
   dio: ^5.2.0+1
+  flutter_riverpod: ^2.3.6
 
 dev_dependencies:
   flutter_test:
