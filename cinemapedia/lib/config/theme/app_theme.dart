@@ -6,7 +6,7 @@ class AppTheme {
   ThemeData getTheme() {
     return ThemeData(
       useMaterial3: true,
-      colorSchemeSeed: Colors.redAccent
+      colorSchemeSeed: Colors.blueAccent
     );
   }
 }
