@@ -29,4 +29,9 @@ class MoviesRepositoryImpl implements MoviesRepository {
     return datasource.getUpcoming(page: page);
   }
   
+  @override
+  Future<Movie> getMovieById(String id) {
+    return datasource.getMovieById(id);
+  }
+  
 }

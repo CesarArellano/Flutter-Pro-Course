@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:cinemapedia/config/extensions/null_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/movie.dart';
 
@@ -67,7 +69,7 @@ class _Slide extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Image.network(
-            movie.backdropPath,
+            movie.backdropPath.value(),
             fit: BoxFit.cover,
             loadingBuilder: (context, child, loadingProgress) {
               if( loadingProgress != null ) {
@@ -76,7 +78,10 @@ class _Slide extends StatelessWidget {
                 );
               }
 
-              return FadeIn(child: child);
+              return GestureDetector(
+                child: FadeIn(child: child),
+                onTap: () => context.push('/movie/${ movie.id }'),
+              );
             },
           )
         ),
