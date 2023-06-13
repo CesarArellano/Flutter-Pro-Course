@@ -13,6 +13,10 @@ class Movie {
   final bool? video;
   final double? voteAverage;
   final int? voteCount;
+  final int? budget;
+  final int? revenue;
+  final int? runtime;
+  String? heroId;
 
   Movie({
     required this.adult,
@@ -28,6 +32,10 @@ class Movie {
     required this.title,
     required this.video,
     required this.voteAverage,
-    required this.voteCount
+    required this.voteCount,
+    required this.budget,
+    required this.revenue,
+    required this.runtime,
+    this.heroId,
   });
 }
