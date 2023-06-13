@@ -46,8 +46,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
           itemBuilder: (context, int i) => _MovieItem( 
             movie: movies[i],
             onMovieSelected: (Movie? movie) {
-              clearStreams();
               close(context, movie);
+              clearStreams();
             },
           )
         );
@@ -64,7 +64,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   void onQueryChanged(String query) {
     isLoadingStream.add(true);
     if( (_debounceTimer?.isActive).value() ) _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+    _debounceTimer = Timer(const Duration(milliseconds: 400), () async {
       
       final movies = await searchMovies(query);
       initialMovies = movies;
@@ -111,8 +111,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   Widget? buildLeading(BuildContext context) {
     return IconButton(
       onPressed: () {
-        clearStreams();
         close(context, null);
+        clearStreams();
       }, 
       icon: const Icon( Icons.arrow_back ),
       splashRadius: 22,

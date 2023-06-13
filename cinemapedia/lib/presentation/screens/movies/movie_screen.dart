@@ -93,12 +93,12 @@ class _CustomSliverAppbar extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [ 0.7, 1.0 ],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    stops: [ 0.0, 0.2 ],
                     colors: [
+                      Colors.black54,
                       Colors.transparent,
-                      Colors.black87
                     ]
                   )
                 ),
@@ -121,6 +121,12 @@ class _CustomSliverAppbar extends StatelessWidget {
           ],
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: (){},
+          icon: const Icon(Icons.favorite_border_outlined)
+        )
+      ],
     );
   }
 }
