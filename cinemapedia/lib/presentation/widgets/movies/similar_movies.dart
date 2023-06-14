@@ -39,12 +39,9 @@ class _Recomendations extends StatelessWidget {
 
     if ( movies.isEmpty ) return const SizedBox();
 
-    return Container(
-      margin: const EdgeInsetsDirectional.only(bottom: 50),
-      child: MovieHorizontalListview(
-        title: 'Recomendaciones',
-        movies: movies
-      ),
+    return MovieHorizontalListview(
+      title: 'Recomendations',
+      movies: movies
     );
   }
 }

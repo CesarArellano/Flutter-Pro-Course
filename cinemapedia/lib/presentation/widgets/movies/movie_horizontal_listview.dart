@@ -86,14 +86,13 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.titleLarge;
     return Container(
       padding: const EdgeInsets.only(top: 10),
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
           if( title != null )
-            Text(title!, style: titleStyle),
+            Text(title!, style: const TextStyle( fontSize: 22, fontWeight: FontWeight.bold)),
           const Spacer(),
           if( subtitle != null )
             FilledButton.tonal(

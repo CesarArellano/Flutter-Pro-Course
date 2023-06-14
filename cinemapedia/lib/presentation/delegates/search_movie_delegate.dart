@@ -173,35 +173,37 @@ class _MovieItem extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            SizedBox(
-              width: size.width * 0.7,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    movie.title.value(),
-                    style: textStyles.titleMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    movie.overview.value(),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.star, color: Colors.amber),
-                      const SizedBox(width: 4),
-                      Text(
-                        HumanFormats.number(movie.voteAverage.value(), 2),
-                        style: chipTextStyle
-                      ),
-                    ]
-                  ),
-                ],
+            Flexible(
+              child: SizedBox(
+                width: size.width * 0.7,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      movie.title.value(),
+                      style: textStyles.titleMedium,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      movie.overview.value(),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.star, color: Colors.amber),
+                        const SizedBox(width: 4),
+                        Text(
+                          HumanFormats.number(movie.voteAverage.value(), 2),
+                          style: chipTextStyle
+                        ),
+                      ]
+                    ),
+                  ],
+                ),
               ),
             )
           ],

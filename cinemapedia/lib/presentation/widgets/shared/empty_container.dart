@@ -5,11 +5,13 @@ class EmptyContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    return Center(
       child: Icon(
         Icons.movie_outlined,
         size: 130,
-        color: Colors.black26,
+        color:  isDarkTheme ?  Colors.white70 : Colors.black26,
       )
     );
   }

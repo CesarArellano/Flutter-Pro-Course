@@ -232,12 +232,10 @@ class _MovieDetails extends StatelessWidget {
         _ActorsByMovie(
           movieId: movie.id.toString()
         ),
-        //* Videos de la película (si tiene)
+        const SizedBox(height: 8),
         VideosFromMovie( movieId: movie.id.value() ),
-
-        //* Películas similares
+        const SizedBox(height: 4),
         SimilarMovies(movieId: movie.id.value()),
-        const SizedBox(height: 10)
       ]
     );
   }
@@ -367,13 +365,15 @@ class _CastCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: 150,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: const EdgeInsets.symmetric( horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black45,
+        color: isDarkTheme ?Colors.black38 : Colors.white,
         boxShadow: const <BoxShadow>[
           BoxShadow(
             blurRadius: 6,

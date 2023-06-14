@@ -49,7 +49,7 @@ class _VideosList extends StatelessWidget {
         // ignore: prefer_const_constructors
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: const Text('Videos', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+          child: const Text('Videos', style: TextStyle( fontSize: 22, fontWeight: FontWeight.bold)),
         ),
         
         //* Aunque tengo varios videos, sólo quiero mostrar el primero
