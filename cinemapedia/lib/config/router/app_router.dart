@@ -10,7 +10,7 @@ final appRouter = GoRouter(
       path: '/home/:page',
       builder: (_, state) {
         final String pageViewIndex = state.pathParameters['page'] ?? '0';
-        return HomeScreen( pageViewIndex: int.parse(pageViewIndex) );
+        return HomeScreen( pageIndex: int.parse(pageViewIndex) );
       },
       routes: [
         GoRoute(

@@ -1,1 +1,3 @@
 *.mp4
+*.g.dart
+.env

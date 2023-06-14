@@ -7,6 +7,8 @@ import '../../../config/extensions/null_extensions.dart';
 import '../../../domain/entities/actor.dart';
 import '../../../domain/entities/movie.dart';
 import '../../providers/movies/movie_info_provider.dart';
+import '../../providers/providers.dart';
+import '../../widgets/widgets.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   
@@ -58,16 +60,22 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
   }
 }
 
+final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int movieId) {
+  final localStorageProvider = ref.watch(localStorageRepositoryProvider);
+  return localStorageProvider.isMovieFavorite(movieId);
+});
 
-class _CustomSliverAppbar extends StatelessWidget {
+class _CustomSliverAppbar extends ConsumerWidget {
   const _CustomSliverAppbar({
     required this.movie,
   });
 
   final Movie movie;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
+
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id.value()));
 
     return SliverAppBar(
       backgroundColor: Colors.black,
@@ -123,8 +131,18 @@ class _CustomSliverAppbar extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          onPressed: (){},
-          icon: const Icon(Icons.favorite_border_outlined)
+          onPressed: () async {
+            await ref.read(favoriteMoviesProvider.notifier)
+              .toggleFavorite(movie);
+            ref.invalidate(isFavoriteProvider(movie.id.value()));
+          },
+          icon: isFavoriteFuture.when(
+            data: ( isFavorite ) => isFavorite
+              ? const Icon(Icons.favorite, color: Colors.red,)
+              : const Icon(Icons.favorite_border),
+            error: (error, stackTrace) =>  throw UnimplementedError(),
+            loading: () => const CircularProgressIndicator()
+          )
         )
       ],
     );
@@ -214,6 +232,11 @@ class _MovieDetails extends StatelessWidget {
         _ActorsByMovie(
           movieId: movie.id.toString()
         ),
+        //* Videos de la película (si tiene)
+        VideosFromMovie( movieId: movie.id.value() ),
+
+        //* Películas similares
+        SimilarMovies(movieId: movie.id.value()),
         const SizedBox(height: 10)
       ]
     );
@@ -350,7 +373,7 @@ class _CastCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric( horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black45,
         boxShadow: const <BoxShadow>[
           BoxShadow(
             blurRadius: 6,
