@@ -54,7 +54,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> with AutomaticKee
             Text('Ohh no!!', style: TextStyle(fontSize: 30, color: colors.primary)),
             const Text(
               "You don't have favorite movies",
-              style: TextStyle(fontSize: 20, color: Colors.black45)
+              style: TextStyle(fontSize: 20)
             ),
             const SizedBox(height: 20,),
             FilledButton.tonal(
