@@ -22,6 +22,12 @@ class HomeScreen extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_ios_rounded),
             onTap: () => context.push('/bloc'),
           ),
+          ListTile(
+            title: const Text('Formz'),
+            subtitle: const Text('Validate forms with Formz package'),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            onTap: () => context.push('/formz'),
+          ),
         ],
       )
     );
