@@ -6,11 +6,11 @@ class NotificationsState extends Equatable {
     this.notifications = const []
   });
   
-  final List<dynamic> notifications;
+  final List<PushMessage> notifications;
   final AuthorizationStatus status;
 
   NotificationsState copyWith({
-    List<dynamic>? notifications,
+    List<PushMessage>? notifications,
     AuthorizationStatus? status,
   }) => NotificationsState(
     notifications: notifications ?? this.notifications,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:push_app/blocs/notifications/notifications_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   
@@ -8,10 +11,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notification Permission'),
+        title: context.select((NotificationsBloc bloc ) => Text('${ bloc.state.status }')),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<NotificationsBloc>().requestPermission();
+            },
             icon: const Icon(Icons.settings)
           )
         ],
@@ -26,8 +31,21 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('HomeScreen'),
+    final notificationList = context.watch<NotificationsBloc>().state.notifications;
+    return ListView.builder(
+      itemCount: notificationList.length,
+      itemBuilder: (context, index) {
+        final notification = notificationList[index];
+
+        return ListTile(
+          title: Text(notification.title),
+          subtitle: Text(notification.body),
+          leading: notification.imageUrl != null  
+            ? Image.network(notification.imageUrl!)
+            : null,
+          onTap: () => context.push('/push-details/${ notification.messageId }'),
+        );
+      }
     );
   }
 }
