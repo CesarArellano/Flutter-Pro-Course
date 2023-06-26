@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../config/local_notifications/local_notifications_config.dart';
 import '../../domain/entities/push_message.dart';
 import '../../firebase_options.dart';
 
@@ -33,7 +34,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     );
   }
 
-  void requestPermission() async {
+  Future<void> requestPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -44,6 +45,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       sound: true,
     );
     
+    await LocalNotificationsConfig.requestPermission();
+
     add(NotificationStatusChanged(settings.authorizationStatus));
     
   }
