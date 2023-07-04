@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:teslo_shop/config/config.dart';
 
 import '../../../shared/infrastructured/inputs/inputs.dart';
 
@@ -68,7 +69,7 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     _touchEveryField();
     if( !state.isValid ) return;
 
-    print('onFormSubmit: ${ state.toString() }');
+    print('onFormSubmit: ${ state.toString() }, API_URL: ${ Environment.apiUrl}');
   }
 
   void _touchEveryField() {
