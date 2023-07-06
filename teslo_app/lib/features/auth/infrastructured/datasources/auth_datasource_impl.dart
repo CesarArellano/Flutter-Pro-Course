@@ -1,11 +1,9 @@
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:teslo_shop/config/config.dart';
-import 'package:teslo_shop/features/auth/domain/entities/user_mapper.dart';
 
-import '../../domain/datasources/auth_datasource.dart';
-import '../../domain/entities/user.dart';
+import '../../../../config/config.dart';
+import '../../domain/domain.dart';
+import '../infrastructured.dart';
 
 class AuthDatasourceImpl implements AuthDatasource {
 
@@ -30,15 +28,16 @@ class AuthDatasourceImpl implements AuthDatasource {
 
       return user;
 
-    } catch (e) {
-      log(e.toString());
-      return const User(
-        id: '',
-        email: '',
-        fullName: '',
-        roles: [],
-        token: ''
-      );
+    } on DioException catch (e) {
+      if( e.response?.statusCode == 401 ) {
+        throw CustomError(e.response?.data['message'] ?? 'Credentials are not valid', 401);
+      }
+
+      if( e.type == DioExceptionType.connectionTimeout ) throw ConnectionTimeout();
+
+      throw const CustomError('Something wrong happend', 500);
+    } catch(e) {
+      throw const CustomError('Something wrong happend', 500);
     }
   }
 

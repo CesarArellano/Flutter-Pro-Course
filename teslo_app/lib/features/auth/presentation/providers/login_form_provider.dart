@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:teslo_shop/config/config.dart';
+import 'package:teslo_shop/features/auth/presentation/providers/auth_provider.dart';
 
 import '../../../shared/infrastructured/inputs/inputs.dart';
 
@@ -47,7 +47,11 @@ class LoginFormState {
 }
 
 class LoginFormNotifier extends StateNotifier<LoginFormState> {
-  LoginFormNotifier(): super(LoginFormState());
+  final Future<void> Function(String email, String password) loginUserCallback;
+
+  LoginFormNotifier({
+    required this.loginUserCallback
+  }): super(LoginFormState());
 
   void onEmailChange( String value ) {
     final newEmail = Email.dirty(value);
@@ -65,11 +69,11 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     );
   }
 
-  void onFormSubmit() {
+  Future<void> onFormSubmit() async {
     _touchEveryField();
     if( !state.isValid ) return;
 
-    print('onFormSubmit: ${ state.toString() }, API_URL: ${ Environment.apiUrl}');
+    await loginUserCallback(state.email.value, state.password.value);
   }
 
   void _touchEveryField() {
@@ -87,5 +91,6 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
 
 // Delete last state when the user log out.
 final loginFormProvider = StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
-  return LoginFormNotifier();
+  final loginUserCallback = ref.read(authProvider.notifier).loginUser;
+  return LoginFormNotifier(loginUserCallback: loginUserCallback);
 });
