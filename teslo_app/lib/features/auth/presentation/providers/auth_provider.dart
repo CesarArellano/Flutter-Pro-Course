@@ -1,22 +1,33 @@
+
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../shared/infrastructured/services/services.dart';
 import '../../domain/domain.dart';
 import '../../infrastructured/infrastructured.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepository = AuthRepositoryImpl();
+  final keyValueStorageService = KeyValueStorageServiceImpl();
+
   return AuthNotifier(
-    authRepository: authRepository
+    authRepository: authRepository,
+    keyValueStorageService: keyValueStorageService,
   );
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
 
   final AuthRepository authRepository;
+  final KeyValueStorageService keyValueStorageService;
 
   AuthNotifier({
-    required this.authRepository
-  }): super(AuthState());
+    required this.authRepository,
+    required this.keyValueStorageService,
+  }): super(AuthState()) {
+    checkAuthStatus();
+  }
 
   Future<void> loginUser(String email, String password) async {
     await Future.delayed(const Duration(milliseconds: 500));
@@ -40,11 +51,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   }
 
-  void checkAuthStatus() {
-    
+  Future<void> checkAuthStatus() async {
+    final token = await keyValueStorageService.getValue<String>('token');
+    log('checkAuthStatus: $token');
+    if( token == null ) return logout();
+
+    try {
+      final user = await authRepository.checkAuthStatus(token);
+      _setLoggedUser(user);
+    } catch (e) {
+      logout();
+    }
   }
 
   Future<void> logout([ String? errorMessage ]) async {
+    await keyValueStorageService.removeKey('token');
     state = state.copyWith(
       user: null,
       authStatus: AuthStatus.notAuthenticated,
@@ -52,8 +73,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  void _setLoggedUser(User user) {
-    //TODO: Save JWT in storage
+  Future<void> _setLoggedUser(User user) async {
+    await keyValueStorageService.setKeyValue<String>('token', user.token);
+
     state = state.copyWith(
       user: user,
       authStatus: AuthStatus.authenticated,

@@ -84,6 +84,7 @@ class _LoginForm extends ConsumerWidget {
 
           CustomTextFormField(
             label: 'Correo',
+            textInputAction: TextInputAction.next,
             keyboardType: TextInputType.emailAddress,
             onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
             errorMessage: loginForm.isFormPosted
@@ -94,6 +95,10 @@ class _LoginForm extends ConsumerWidget {
 
           CustomTextFormField(
             label: 'Contraseña',
+            onFieldSubmitted: ( _ ) {
+              FocusScope.of(context).unfocus();
+              ref.read(loginFormProvider.notifier).onFormSubmit();
+            },
             onChanged: ref.read(loginFormProvider.notifier).onPasswordChange,
             errorMessage: loginForm.isFormPosted
               ? loginForm.password.errorMessage
@@ -107,11 +112,15 @@ class _LoginForm extends ConsumerWidget {
             width: double.infinity,
             height: 60,
             child: CustomFilledButton(
-              text: 'Ingresar',
               buttonColor: Colors.black,
-              onPressed: () {
+              onPressed:  loginForm.isPosting 
+              ? null
+              : () {
                 ref.read(loginFormProvider.notifier).onFormSubmit();
               },
+              child: loginForm.isPosting
+                ? const CircularProgressIndicator()
+                : const Text('Ingresar'),
             )
           ),
 

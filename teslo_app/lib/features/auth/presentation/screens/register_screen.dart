@@ -106,11 +106,11 @@ class _RegisterForm extends StatelessWidget {
             width: double.infinity,
             height: 60,
             child: CustomFilledButton(
-              text: 'Crear',
               buttonColor: Colors.black,
               onPressed: (){
 
               },
+              child: const Text('Crear'),
             )
           ),
 
