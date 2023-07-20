@@ -57,9 +57,9 @@ class AuthDatasourceImpl implements AuthDatasource {
 
       if( e.type == DioExceptionType.connectionTimeout ) throw ConnectionTimeout();
 
-      throw const CustomError('Something wrong happend', 500);
+      throw const CustomError('Something wrong happened', 500);
     } catch(e) {
-      throw const CustomError('Something wrong happend', 500);
+      throw const CustomError('Something wrong happened', 500);
     }
   }
 

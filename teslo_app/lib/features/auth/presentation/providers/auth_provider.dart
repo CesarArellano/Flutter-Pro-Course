@@ -74,7 +74,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> _setLoggedUser(User user) async {
-    await keyValueStorageService.setKeyValue<String>('token', user.token);
+    await keyValueStorageService.setKeyValue<String>('token', user.token ?? '');
 
     state = state.copyWith(
       user: user,

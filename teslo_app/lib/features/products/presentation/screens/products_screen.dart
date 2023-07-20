@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:teslo_shop/features/shared/shared.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
+import 'package:teslo_shop/features/products/presentation/widgets/widgets.dart';
+
+import '../../../shared/shared.dart';
+import '../providers/products_provider.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
@@ -31,11 +37,58 @@ class ProductsScreen extends StatelessWidget {
 }
 
 
-class _ProductsView extends StatelessWidget {
+class _ProductsView extends ConsumerStatefulWidget {
   const _ProductsView();
 
   @override
+  ConsumerState<_ProductsView> createState() => _ProductsViewState();
+}
+
+class _ProductsViewState extends ConsumerState<_ProductsView> {
+
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+
+    scrollController.addListener(() {
+      final position = scrollController.position;
+
+      if( ( position.pixels + 400 ) >= position.maxScrollExtent ) {
+        ref.read(productsProvider.notifier).loadNextPage();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Eres genial!'));
+    final productsState = ref.watch(productsProvider);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: MasonryGridView.count(
+        controller: scrollController,
+        crossAxisCount: 2,
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 35,
+        itemCount: productsState.products.length,
+        itemBuilder: (context, index) {
+          final product = productsState.products[index];
+          return GestureDetector(
+            onTap: () => context.push('/product/${ product.id }'),
+            child: ProductCard(
+              product: product
+            ),
+          );
+        },
+      ),
+    );
   }
 }

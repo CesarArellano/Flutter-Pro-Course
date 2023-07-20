@@ -31,7 +31,7 @@ class ProductsDatasourceImpl implements ProductsDatasource {
   @override
   Future<List<Product>> getProductsByPage({int limit = 10, int offset = 0}) async {
     try {
-      final resp = await dio.get('/products', queryParameters: {
+      final resp = await dio.get<List>('/products', queryParameters: {
         'limit': limit,
         'offset': offset
       });

@@ -1,9 +1,9 @@
 class User {
-  final String id;
-  final String email;
-  final String fullName;
-  final String token;
-  final List<String> roles;
+  final String? id;
+  final String? email;
+  final String? fullName;
+  final String? token;
+  final List<String?> roles;
 
   const User({
     required this.id,
