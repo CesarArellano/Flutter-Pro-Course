@@ -8,7 +8,7 @@ class ProductMapper {
   static jsonToEntity( Map<String, dynamic> json ) => Product(
     id: json['id'], 
     title: json['title'], 
-    price: int.parse( json['price'].toString() ), 
+    price: double.tryParse( json['price'].toString() ), 
     description: json['description'], 
     slug: json['slug'], 
     stock: json['stock'], 

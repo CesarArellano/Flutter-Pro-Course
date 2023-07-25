@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:teslo_shop/features/products/infrastructure/errors/product_errors.dart';
 
 import '../../../../config/config.dart';
 import '../../domain/domain.dart';
@@ -23,9 +24,17 @@ class ProductsDatasourceImpl implements ProductsDatasource {
   }
 
   @override
-  Future<Product> getProductById(String id) {
-    // TODO: implement getProductById
-    throw UnimplementedError();
+  Future<Product> getProductById(String id) async {
+    try {
+      final resp = await dio.get('/products/$id');
+
+      return Product.fromJson(resp.data);
+    
+    } on DioException {
+      throw ProductNotFound();
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override
