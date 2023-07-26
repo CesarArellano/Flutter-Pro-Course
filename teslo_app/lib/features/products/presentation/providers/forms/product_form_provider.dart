@@ -1,11 +1,25 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:teslo_shop/config/extensions/null_extensions.dart';
+import 'package:teslo_shop/features/products/presentation/providers/providers.dart';
 
 import '../../../../../config/constants/environment.dart';
 import '../../../../shared/infrastructured/inputs/inputs.dart';
 import '../../../domain/domain.dart';
 
+final productFormProvider = StateNotifierProvider.autoDispose.family<ProductFormNotifier, ProductFormState, Product>(
+  (ref, product) {
+
+    final onSubmitCallback = ref.watch(productsProvider.notifier).createOrUpdateProduct;
+
+    return ProductFormNotifier(
+      product: product,
+      onSubmitCallback: onSubmitCallback
+    );
+  }
+); 
 class ProductFormNotifier extends StateNotifier<ProductFormState> {
   
   final void Function( Map<String, dynamic> productLike )? onSubmitCallback;
@@ -17,8 +31,8 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
     id: product.id,
     title: Title.dirty(product.title.value()),
     slug: Slug.dirty(product.slug.value()),
-    price: Price.dirty(product.price.value()),
-    sizes: product.sizes.value(),
+    price: Price.dirty(product.price.value().toDouble()),
+    sizes: product.sizes ?? <String>[],
     gender: product.gender.value(),
     inStock: Stock.dirty(product.stock.value()),
     images: product.images.value(),
@@ -43,11 +57,16 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
       'gender': state.gender,
       'tags': state.tags.split(','),
       'images': state.images.map(
-        ( image ) => image.replaceAll('${ Environment.apiUrl }/files/product', '')
+        ( image ) => image.replaceAll('${ Environment.apiUrl }/files/product/', '')
       ).toList()
     };
-
-    return true;
+    try {
+      onSubmitCallback?.call(productLike);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
   }
 
   void _touchedEverything() {
@@ -167,6 +186,7 @@ class ProductFormState {
     Title? title,
     Slug? slug,
     Price? price,
+    List<String>? images,
     List<String>? sizes,
     String? gender,
     Stock? inStock,
@@ -182,6 +202,7 @@ class ProductFormState {
     inStock: inStock ?? this.inStock,
     gender: gender ?? this.gender,
     tags: tags ?? this.tags,
-    description: description ?? this.description
+    description: description ?? this.description,
+    images: images ?? this.images
   );
 }

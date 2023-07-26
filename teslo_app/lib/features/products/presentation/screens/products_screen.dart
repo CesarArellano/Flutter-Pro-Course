@@ -30,7 +30,9 @@ class ProductsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Nuevo producto'),
         icon: const Icon( Icons.add ),
-        onPressed: () {},
+        onPressed: () {
+          context.push('/product/new');
+        },
       ),
     );
   }
@@ -71,13 +73,19 @@ class _ProductsViewState extends ConsumerState<_ProductsView> {
   Widget build(BuildContext context) {
     final productsState = ref.watch(productsProvider);
 
+    if( productsState.products.isEmpty ) {
+      return const Center(
+        child: Text('No products'),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: MasonryGridView.count(
         controller: scrollController,
         crossAxisCount: 2,
-        mainAxisSpacing: 20,
-        crossAxisSpacing: 35,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 25,
         itemCount: productsState.products.length,
         itemBuilder: (context, index) {
           final product = productsState.products[index];

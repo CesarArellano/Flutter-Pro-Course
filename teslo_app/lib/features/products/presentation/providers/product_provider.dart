@@ -28,8 +28,19 @@ class ProductNotifier extends StateNotifier<ProductState> {
     loadProduct();
   }
 
+  Product newEmptyProduct() {
+    return Product();
+  }
+
   Future<void> loadProduct() async {
     try {
+      if( state.id == 'new' ) {
+        state = state.copyWith(
+          isLoading: false,
+          product: newEmptyProduct()
+        );
+        return;
+      }
       final product = await productsRepository.getProductById(state.id);
       state = state.copyWith(
         isLoading: false,

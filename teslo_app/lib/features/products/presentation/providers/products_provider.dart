@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/domain.dart';
@@ -44,6 +46,31 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       offset: state.offset + 10,
       products: [ ...state.products, ...products ]
     );
+  }
+
+  Future<bool> createOrUpdateProduct(Map<String, dynamic> productLike) async {
+    try {
+      final product = await productsRepository.createUpdateProduct(productLike);
+      final isProductInList = state.products.any((element) => element.id == product.id);
+
+      if( !isProductInList) {
+        state = state.copyWith(
+          products: [ ...state.products, product]
+        );
+        return true;
+      }
+      
+      state = state.copyWith(
+        products: state.products.map((element) {
+          return ( element.id == product.id ) ? product : element;
+        }).toList()
+      );
+      return true;
+
+    } catch (e) {
+      log('ProductsProvider createOrUpdateProduct: $e');
+      return false;
+    }
   }
 }
 

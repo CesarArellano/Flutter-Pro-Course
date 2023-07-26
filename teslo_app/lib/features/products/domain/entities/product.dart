@@ -5,7 +5,7 @@ import '../../../auth/infrastructured/infrastructured.dart';
 class Product {
     final String? id;
     final String? title;
-    final double? price;
+    final num? price;
     final String? description;
     final String? slug;
     final int? stock;

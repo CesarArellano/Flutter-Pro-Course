@@ -13,23 +13,26 @@ class ProductCard extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
-      child: Column(
-        children: [
-          _ImageViewer(
-            images: product.images ?? [],
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: Text(
-              product.title ?? 'N/A',
-              textAlign: TextAlign.center
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Column(
+          children: [
+            _ImageViewer(
+              images: product.images ?? [],
             ),
-          ),
-          const SizedBox(height: 10),
-        ],
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Text(
+                product.title ?? 'N/A',
+                textAlign: TextAlign.center
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }

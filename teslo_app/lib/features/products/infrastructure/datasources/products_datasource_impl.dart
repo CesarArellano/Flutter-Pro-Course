@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
-import 'package:teslo_shop/features/products/infrastructure/errors/product_errors.dart';
 
 import '../../../../config/config.dart';
 import '../../domain/domain.dart';
+import '../errors/product_errors.dart';
 
 class ProductsDatasourceImpl implements ProductsDatasource {
   late final Dio dio;
@@ -18,9 +20,22 @@ class ProductsDatasourceImpl implements ProductsDatasource {
   ));
   
   @override
-  Future<Product> createUpdateProduct(Map<String, dynamic> productLike) {
-    // TODO: implement createUpdateProduct
-    throw UnimplementedError();
+  Future<Product> createUpdateProduct(Map<String, dynamic> productLike) async {
+    try {
+      final String? productId = productLike['id'];
+      final String method = ( productId == null ) ? 'POST': 'PATCH';
+      final String url = ( productId == null ) ? '/products' : '/products/$productId';
+      productLike.remove('id');
+      final response = await dio.request(
+        url,
+        data: productLike,
+        options: Options(method: method)
+      );
+      return Product.fromJson(response.data);
+    } catch (e) {
+      log(e.toString());
+      throw Exception();
+    }
   }
 
   @override
@@ -33,6 +48,7 @@ class ProductsDatasourceImpl implements ProductsDatasource {
     } on DioException {
       throw ProductNotFound();
     } catch (e) {
+      log('ProductsDatasource: $e');
       throw Exception(e);
     }
   }
@@ -53,6 +69,7 @@ class ProductsDatasourceImpl implements ProductsDatasource {
 
       return products;
     } catch (e) {
+      log(e.toString());
       return [];
     }
   }
