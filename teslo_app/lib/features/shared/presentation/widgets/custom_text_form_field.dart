@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
 
   final String? label;
   final String? hint;
@@ -25,6 +25,19 @@ class CustomTextFormField extends StatelessWidget {
     this.textInputAction,
     this.validator, 
   });
+
+  @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool showPassword;
+
+  @override
+  void initState() {
+    super.initState();
+    showPassword = widget.obscureText;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,23 +65,34 @@ class CustomTextFormField extends StatelessWidget {
         ]
       ),
       child: TextFormField(
-        onChanged: onChanged,
-        validator: validator,
-        textInputAction: textInputAction,
-        onFieldSubmitted: onFieldSubmitted,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
+        onChanged: widget.onChanged,
+        validator: widget.validator,
+        textInputAction: widget.textInputAction,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        obscureText: showPassword,
+        keyboardType: widget.keyboardType,
         style: const TextStyle( fontSize: 20, color: Colors.black54 ),
         decoration: InputDecoration(
           floatingLabelStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
           enabledBorder: border,
           focusedBorder: border,
+          suffixIcon: widget.obscureText
+            ? IconButton(
+              onPressed: () => setState(() {
+                showPassword = !showPassword;
+              }),
+              icon: Icon( (showPassword)
+                ? Icons.visibility
+                : Icons.visibility_off
+              )
+            )
+            : null,
           errorBorder: border.copyWith( borderSide: const BorderSide( color: Colors.transparent )),
           focusedErrorBorder: border.copyWith( borderSide: const BorderSide( color: Colors.transparent )),
           isDense: true,
-          label: label != null ? Text(label!) : null,
-          hintText: hint,
-          errorText: errorMessage,
+          label: widget.label != null ? Text(widget.label!) : null,
+          hintText: widget.hint,
+          errorText: widget.errorMessage,
           focusColor: colors.primary,
           // icon: Icon( Icons.supervised_user_circle_outlined, color: colors.primary, )
         ),
