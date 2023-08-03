@@ -30,8 +30,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> loginUser(String email, String password) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
     try {
       final user = await authRepository.login(email, password);
       _setLoggedUser(user);
@@ -47,8 +45,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
     
   }
 
-  void registerUser( String email, String password, String username ) async {
-
+  Future<void> registerUser( String email, String password, String username ) async {
+    try {
+      final user = await authRepository.register(email, password, username);
+      _setLoggedUser(user);
+    } on WrongCredentials {
+      logout('The credentials are wrong');
+    } on ConnectionTimeout {
+      logout('Connection Timeout error');
+    } on CustomError catch(e) {
+      logout(e.message);
+    } catch (e) {
+      logout('Uncontrolled error');
+    }
   }
 
   Future<void> checkAuthStatus() async {

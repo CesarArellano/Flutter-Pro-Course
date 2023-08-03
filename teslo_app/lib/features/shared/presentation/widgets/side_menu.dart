@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:teslo_shop/config/extensions/null_extensions.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../shared.dart';
@@ -24,6 +25,7 @@ class SideMenuState extends ConsumerState<SideMenu> {
   @override
   Widget build(BuildContext context) {
 
+    final auth = ref.watch(authProvider);
     final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
     final textStyles = Theme.of(context).textTheme;
     
@@ -51,7 +53,7 @@ class SideMenuState extends ConsumerState<SideMenu> {
 
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 16, 10),
-          child: Text('Tony Stark', style: textStyles.titleSmall ),
+          child: Text((auth.user?.fullName).valueEmpty('Tony Stark'), style: textStyles.titleSmall ),
         ),
 
         const NavigationDrawerDestination(

@@ -29,7 +29,7 @@ class Product {
         this.user,
     });
 
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
+    factory Product.fromJson(Map<String, dynamic> json, { bool searchByTerm = false }) => Product(
         id: json["id"],
         title: json["title"],
         price: json["price"],
@@ -39,13 +39,23 @@ class Product {
         sizes: json["sizes"] == null ? [] : List<String>.from(json["sizes"]!.map((x) => x)),
         gender: json["gender"],
         tags: json["tags"] == null ? [] : List<String>.from(json["tags"]!.map((x) => x)),
-        images: json["images"] == null ? [] : List<String>.from(
-          json['images'].map( 
-            (image) => image.startsWith('http')
-              ? image
-              : '${ Environment.apiUrl }/files/product/$image',
-          )
-        ),
+        images: json["images"] == null 
+          ? [] 
+          : ( searchByTerm )
+            ? List<String>.from(
+              json['images'].map( 
+                (image) => image['url'].startsWith('http')
+                  ? image['url']
+                  : '${ Environment.apiUrl }/files/product/${ image['url'] }',
+              )
+            )
+            : List<String>.from(
+              json['images'].map( 
+                (image) => image.startsWith('http')
+                  ? image
+                  : '${ Environment.apiUrl }/files/product/$image',
+              )
+            ),
         user: json["user"] == null ? null : UserMapper.userJsonToEntity(json["user"]),
     );
 }

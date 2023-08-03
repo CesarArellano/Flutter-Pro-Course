@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:teslo_shop/features/shared/shared.dart';
+import '../../../shared/shared.dart';
+
+import '../../../../config/helpers/helpers.dart';
+import '../providers/auth_provider.dart';
+import '../providers/register_form_provider.dart';
 
 
 class RegisterScreen extends StatelessWidget {
@@ -43,7 +48,7 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox( height: 50 ),
     
                 Container(
-                  height: size.height - 260, // 80 los dos sizebox y 100 el ícono
+                  height: size.height - 200, // 80 los dos sizebox y 100 el ícono
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: scaffoldBackgroundColor,
@@ -60,47 +65,72 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatelessWidget {
+class _RegisterForm extends ConsumerWidget {
   const _RegisterForm();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
+    final registerForm = ref.watch(registerFormProvider);
     final textStyles = Theme.of(context).textTheme;
 
+    ref.listen(authProvider, (previous, next) {
+      if( next.errorMessage.isEmpty ) return;
+      Helpers.showSnackbar(context, next.errorMessage );
+    });
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
           const SizedBox( height: 30 ),
           Text('Nueva cuenta', style: textStyles.titleMedium ),
-          const SizedBox( height: 50 ),
+          const SizedBox( height: 20 ),
 
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Nombre completo',
             keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            onChanged: ref.read(registerFormProvider.notifier).onUsernameChange,
+            errorMessage: registerForm.isFormPosted
+              ? registerForm.username.errorMessage
+              : null,
           ),
-          const SizedBox( height: 30 ),
+          const SizedBox( height: 20 ),
 
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            onChanged: ref.read(registerFormProvider.notifier).onEmailChange,
+            errorMessage: registerForm.isFormPosted
+              ? registerForm.email.errorMessage
+              : null,
           ),
-          const SizedBox( height: 30 ),
+          const SizedBox( height: 20 ),
 
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
+            textInputAction: TextInputAction.next,
+            onChanged: ref.read(registerFormProvider.notifier).onPasswordChange,
+            errorMessage: registerForm.isFormPosted
+              ? registerForm.password.errorMessage
+              : null,
           ),
     
-          const SizedBox( height: 30 ),
+          const SizedBox( height: 20 ),
 
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Repita la contraseña',
             obscureText: true,
+            textInputAction: TextInputAction.done,
+            onChanged: ref.read(registerFormProvider.notifier).onRepeatPasswordChange,
+            errorMessage: registerForm.isFormPosted
+              ? registerForm.repeatPassword.errorMessage
+              : null,
           ),
     
-          const SizedBox( height: 30 ),
+          const SizedBox( height: 20 ),
 
           SizedBox(
             width: double.infinity,
@@ -108,14 +138,11 @@ class _RegisterForm extends StatelessWidget {
             child: CustomFilledButton(
               buttonColor: Colors.black,
               onPressed: (){
-
+                ref.read(registerFormProvider.notifier).onFormSubmit();
               },
               child: const Text('Crear'),
             )
           ),
-
-          const Spacer( flex: 2 ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -132,8 +159,6 @@ class _RegisterForm extends StatelessWidget {
               )
             ],
           ),
-
-          const Spacer( flex: 1),
         ],
       ),
     );

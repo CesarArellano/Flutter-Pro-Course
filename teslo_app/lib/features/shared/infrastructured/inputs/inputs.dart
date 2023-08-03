@@ -4,3 +4,4 @@ export 'title.dart';
 export 'price.dart';
 export 'stock.dart';
 export 'slug.dart';
+export 'username.dart';

@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:teslo_shop/features/products/domain/domain.dart';
+import 'package:teslo_shop/features/products/presentation/providers/search/search_products_provider.dart';
+import 'package:teslo_shop/features/products/presentation/search/product_search_delegate.dart';
 import 'package:teslo_shop/features/products/presentation/widgets/widgets.dart';
 
 import '../../../shared/shared.dart';
 import '../providers/products_provider.dart';
 
-class ProductsScreen extends StatelessWidget {
+class ProductsScreen extends ConsumerWidget {
   const ProductsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -21,7 +24,19 @@ class ProductsScreen extends StatelessWidget {
         title: const Text('Products'),
         actions: [
           IconButton(
-            onPressed: (){}, 
+            onPressed: () {
+              showSearch<Product?>(
+                context: context,
+                query: ref.read(searchQueryProvider),
+                delegate: ProductSearchDelegate(
+                  searchProducts: ref.read(searchedMoviesProvider.notifier).searchMoviesByQuery,
+                  initialProducts: ref.read(searchedMoviesProvider)
+                )
+              ).then((product) {
+                if( product == null ) return;
+                context.push('/product/${ product.id }');
+              });
+            }, 
             icon: const Icon( Icons.search_rounded)
           )
         ],
