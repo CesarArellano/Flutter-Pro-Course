@@ -136,10 +136,9 @@ class _MovieItem extends StatelessWidget {
   final Function(Movie? movie) onMovieSelected;
 
   const _MovieItem({
-    Key? key,
     required this.movie,
     required this.onMovieSelected,
-  }) : super(key: key);
+  });
 
 
   @override

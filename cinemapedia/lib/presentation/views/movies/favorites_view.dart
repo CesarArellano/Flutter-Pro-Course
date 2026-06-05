@@ -7,7 +7,7 @@ import '../../widgets/widgets.dart';
 
 class FavoritesView extends ConsumerStatefulWidget {
   
-  const FavoritesView({Key? key}) : super(key: key);
+  const FavoritesView({super.key});
 
   @override
   ConsumerState<FavoritesView> createState() => _FavoritesViewState();

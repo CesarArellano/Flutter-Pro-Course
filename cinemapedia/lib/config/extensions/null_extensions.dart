@@ -1,13 +1,13 @@
 bool? nullExtensions;
 
 extension IntNullExtension on int? {
-  int value([defaultValue = 0]) {
+  int value([int defaultValue = 0]) {
     return this ?? defaultValue;
   }
 }
 
 extension StringNullExtension on String? {
-  String value([defaultValue = '']) {
+  String value([String defaultValue = '']) {
     return this ?? defaultValue;
   }
 
@@ -20,19 +20,19 @@ extension StringNullExtension on String? {
 }
 
 extension NumNullExtensions on num? {
-  num value([defaultValue = 0.0]) {
+  num value([num defaultValue = 0.0]) {
     return this ?? defaultValue;
   }
 }
 
 extension DoubleNullExtensions on double? {
-  double value([defaultValue = 0.0]) {
+  double value([double defaultValue = 0.0]) {
     return this ?? defaultValue;
   }
 }
 
 extension BoolNullExtension on bool? {
-  bool value([defaultValue = false]) {
+  bool value([bool defaultValue = false]) {
     return this ?? defaultValue;
   }
 }

@@ -17,7 +17,7 @@ Stream<String> getLoadingMessages() {
 
 class FullScreenLoader extends StatelessWidget {
   
-  const FullScreenLoader({Key? key}) : super(key: key);
+  const FullScreenLoader({super.key});
   
 
   @override

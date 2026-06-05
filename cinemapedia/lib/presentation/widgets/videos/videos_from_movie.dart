@@ -23,7 +23,7 @@ class VideosFromMovie extends ConsumerWidget {
 
     return moviesFromVideo.when(
       data: ( videos ) => _VideosList( videos: videos ),
-      error: (_ , __) => const Center(child: Text('No se pudo cargar películas similares') ), 
+      error: (_ , _) => const Center(child: Text('No se pudo cargar películas similares') ), 
       loading: () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
@@ -83,19 +83,8 @@ class _YouTubeVideoPlayerState extends State<_YouTubeVideoPlayer> {
   void initState() {
     super.initState();
     
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.youtubeId,
-      flags: const YoutubePlayerFlags(
-        hideThumbnail: true,
-        showLiveFullscreenButton: false,
-        mute: false,
-        autoPlay: false,
-        disableDragSeek: true,
-        loop: false,
-        isLive: false,
-        forceHD: false,
-        enableCaption: false,
-      ),
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: widget.youtubeId,
     );
   }
 
@@ -103,7 +92,7 @@ class _YouTubeVideoPlayerState extends State<_YouTubeVideoPlayer> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.close();
     super.dispose();
   }
 

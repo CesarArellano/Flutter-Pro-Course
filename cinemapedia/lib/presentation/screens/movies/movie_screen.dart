@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,9 +19,9 @@ class MovieScreen extends ConsumerStatefulWidget {
   final String movieId;
 
   const MovieScreen({
-    Key? key,
+    super.key,
     required this.movieId
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<MovieScreen> createState() => _MovieScreenState();
@@ -78,7 +80,6 @@ class _CustomSliverAppbar extends ConsumerWidget {
     final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id.value()));
 
     return SliverAppBar(
-      backgroundColor: Colors.black,
       foregroundColor: Colors.white,
       expandedHeight: size.height * 0.7,
       flexibleSpace: FlexibleSpaceBar(
@@ -245,9 +246,8 @@ class _Overview extends StatelessWidget {
   final Movie movie;
 
   const _Overview({
-    Key? key,
     required this.movie,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -272,9 +272,8 @@ class _Overview extends StatelessWidget {
 class _MoreDetails extends StatelessWidget {
 
   const _MoreDetails({
-    Key? key,
     required this.movie
-  }) : super(key: key);
+  });
 
   final Movie movie;
 
@@ -358,10 +357,9 @@ class _ActorsByMovie extends ConsumerWidget {
 class _CastCard extends StatelessWidget {
   final Actor actor;
 
-  const _CastCard({ 
-    Key? key,
+  const _CastCard({
     required this.actor 
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
