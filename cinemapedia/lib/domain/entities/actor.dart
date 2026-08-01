@@ -10,4 +10,5 @@ class Actor {
     required this.profilePath,
     required this.character
   });
+  
 }

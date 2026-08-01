@@ -38,37 +38,31 @@ class _UiControlsScreenState extends State<UiControlsScreen> {
             title: const Text('Transportation Vehicule'),
             subtitle: Text(selectedTransportation.toString()),
             children: [
-              RadioListTile(
-                value: Transportation.car,
-                title: const Text('Car'),
+              RadioGroup(
                 groupValue: selectedTransportation,
                 onChanged: ( value ) => setState(() {
                   selectedTransportation = Transportation.car;
-                })
-              ),
-              RadioListTile(
-                value: Transportation.plane,
-                title: const Text('Plane'),
-                groupValue: selectedTransportation,
-                onChanged: ( value ) => setState(() {
-                  selectedTransportation = Transportation.plane;
-                })
-              ),
-              RadioListTile(
-                value: Transportation.boat,
-                title: const Text('Boat'),
-                groupValue: selectedTransportation,
-                onChanged: ( value ) => setState(() {
-                  selectedTransportation = Transportation.boat;
-                })
-              ),
-              RadioListTile(
-                value: Transportation.submarine,
-                title: const Text('Submarine'),
-                groupValue: selectedTransportation,
-                onChanged: ( value ) => setState(() {
-                  selectedTransportation = Transportation.submarine;
-                })
+                }),
+                child: const Column(
+                  children: [
+                    RadioListTile(
+                      value: Transportation.car,
+                      title: Text('Car'),
+                    ),
+                    RadioListTile(
+                      value: Transportation.plane,
+                      title: Text('Plane'),
+                    ),
+                    RadioListTile(
+                      value: Transportation.submarine,
+                      title: Text('Submarine'),
+                    ),
+                    RadioListTile(
+                      value: Transportation.boat,
+                      title: Text('Boat'),
+                    ),
+                  ],
+                )
               ),
             ],
           ),
