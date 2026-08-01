@@ -139,8 +139,12 @@ class _CustomSliverAppbar extends ConsumerWidget {
             data: ( isFavorite ) => isFavorite
               ? const Icon(Icons.favorite, color: Colors.red,)
               : const Icon(Icons.favorite_border),
-            error: (error, stackTrace) =>  throw UnimplementedError(),
-            loading: () => const CircularProgressIndicator()
+            error: (error, stackTrace) => const Icon(Icons.favorite_border),
+            loading: () => const SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+            )
           )
         )
       ],
@@ -277,12 +281,13 @@ class _MoreDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
     final numberFormater = NumberFormat("\$#,##0.00 USD", "en_US");
 
     final releaseDate = movie.releaseDate ?? DateTime.now();
-    final budget = numberFormater.format( movie.budget );
-    final revenue = numberFormater.format( movie.revenue );
+    final budget = numberFormater.format( movie.budget ?? 0 );
+    final revenue = numberFormater.format( movie.revenue ?? 0 );
+    final genreIds = movie.genreIds ?? [];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -291,24 +296,39 @@ class _MoreDetails extends StatelessWidget {
         children: [
           const SizedBox(height: 10),
           const Text('Details', style: TextStyle( fontSize: 22, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 5),
-          Wrap(
-            spacing: 6,
-            children: [
-              Text('Género(s):', style: textTheme.titleSmall),
-              ...(movie.genreIds ?? [] ).map((genre) => Text(
-                (genre != movie.genreIds?.last) ? '$genre,' : '$genre.',
-                style: textTheme.titleSmall
-              ))
-            ],
+          const SizedBox(height: 10),
+          if( genreIds.isNotEmpty )
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: genreIds.map((genre) => Chip(
+                label: Text(genre),
+                visualDensity: VisualDensity.compact,
+                backgroundColor: colors.secondaryContainer,
+              )).toList(),
+            ),
+          if( genreIds.isNotEmpty )
+            const SizedBox(height: 12),
+          _DetailRow(
+            icon: Icons.calendar_today_outlined,
+            label: 'Release date',
+            value: '${ releaseDate.day }-${ releaseDate.month }-${ releaseDate.year }',
           ),
-          Text('Release date: ${ releaseDate.day }-${ releaseDate.month }-${ releaseDate.year }', style: textTheme.titleSmall),
-          const SizedBox(height: 5),
-          Text('Duration: ${ durationToString(movie.runtime!) }h', style: textTheme.titleSmall),
-          const SizedBox(height: 5),
-          Text('Budget: $budget', style: textTheme.titleSmall),
-          const SizedBox(height: 5),
-          Text('Revenue: $revenue', style: textTheme.titleSmall),
+          _DetailRow(
+            icon: Icons.timer_outlined,
+            label: 'Duration',
+            value: '${ durationToString(movie.runtime ?? 0) }h',
+          ),
+          _DetailRow(
+            icon: Icons.attach_money,
+            label: 'Budget',
+            value: budget,
+          ),
+          _DetailRow(
+            icon: Icons.trending_up,
+            label: 'Revenue',
+            value: revenue,
+          ),
           const SizedBox(height: 10),
         ],
       ),
@@ -319,6 +339,42 @@ class _MoreDetails extends StatelessWidget {
     var d = Duration(minutes:minutes);
     List<String> parts = d.toString().split(':');
     return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}';
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _DetailRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: colors.primary),
+          const SizedBox(width: 8),
+          Text('$label: ', style: textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          Expanded(
+            child: Text(
+              value,
+              style: textTheme.titleSmall,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
