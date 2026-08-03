@@ -20,6 +20,14 @@ final appRouter = GoRouter(
             return MovieScreen(movieId: movieId);
           },
         ),
+        GoRoute(
+          path: 'person/:id',
+          name: PersonScreen.name,
+          builder: (_, state) {
+            final String personId = state.pathParameters['id'] ?? 'no-id';
+            return PersonScreen(personId: personId);
+          },
+        ),
       ],
     ),
     GoRoute(path: '/', redirect: (_, _) => '/home/0'),

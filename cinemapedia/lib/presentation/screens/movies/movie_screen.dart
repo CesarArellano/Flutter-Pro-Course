@@ -150,77 +150,11 @@ class _MovieDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final textStyles = Theme.of(context).textTheme;
-    const TextStyle chipTextStyle = TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  movie.posterPath.value(),
-                  width: size.width * 0.3,
-                ),
-              ),
-              const SizedBox(width: 15),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      movie.title ?? 'No title',
-                      style: textStyles.titleLarge,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      movie.originalTitle.value(),
-                      style: textStyles.titleSmall,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Chip(
-                          backgroundColor: Colors.black,
-                          label: Row(
-                            children: [
-                              const Icon(Icons.star, color: Colors.yellow),
-                              const SizedBox(width: 5),
-                              Text(
-                                NumberFormat.decimalPatternDigits(
-                                  decimalDigits: 2,
-                                ).format(movie.voteAverage),
-                                style: chipTextStyle,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        if (movie.adult.value())
-                          const Chip(
-                            backgroundColor: Colors.red,
-                            label: Text('+18', style: chipTextStyle),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        HeaderDetails(movie: movie),
         _Overview(movie: movie),
         _MoreDetails(movie: movie),
         _ActorsByMovie(movieId: movie.id.toString()),
@@ -229,6 +163,88 @@ class _MovieDetails extends StatelessWidget {
         const SizedBox(height: 4),
         SimilarMovies(movieId: movie.id.value()),
       ],
+    );
+  }
+}
+
+class HeaderDetails extends StatelessWidget {
+  const HeaderDetails({
+    super.key,
+    required this.movie,
+  });
+
+  final Movie movie;
+
+  @override
+  Widget build(BuildContext context) {
+
+    final size = MediaQuery.of(context).size;
+    final textStyles = Theme.of(context).textTheme;
+    const TextStyle chipTextStyle = TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    );
+    
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.network(
+              movie.posterPath.value(),
+              width: size.width * 0.3,
+            ),
+          ),
+          const SizedBox(width: 15),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  movie.title ?? 'No title',
+                  style: textStyles.titleLarge,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  movie.originalTitle.value(),
+                  style: textStyles.titleSmall,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Chip(
+                      backgroundColor: Colors.black,
+                      label: Row(
+                        children: [
+                          const Icon(Icons.star, color: Colors.yellow),
+                          const SizedBox(width: 5),
+                          Text(
+                            NumberFormat.decimalPatternDigits(
+                              decimalDigits: 2,
+                            ).format(movie.voteAverage),
+                            style: chipTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    if (movie.adult.value())
+                      const Chip(
+                        backgroundColor: Colors.red,
+                        label: Text('+18', style: chipTextStyle),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

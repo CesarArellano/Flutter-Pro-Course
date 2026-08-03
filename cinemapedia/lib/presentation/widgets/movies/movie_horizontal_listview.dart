@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/extensions/null_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../config/helpers/human_formats.dart';
 import '../../../domain/entities/movie.dart';
@@ -143,14 +144,16 @@ class _Slide extends StatelessWidget {
               Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
               const SizedBox(width: 3),
               Text(
-                '${movie.voteAverage}',
+                NumberFormat.decimalPatternDigits(
+                  decimalDigits: 1,
+                ).format(movie.voteAverage.value()),
                 style: textTheme.bodyMedium?.copyWith(
                   color: Colors.yellow.shade800,
                 ),
               ),
               const Spacer(),
               Text(
-                HumanFormats.number(movie.popularity.value()),
+                HumanFormats.number(movie.popularity.value(), 2),
                 style: textTheme.bodySmall,
               ),
             ],

@@ -21,6 +21,7 @@ class _HomeViewState extends ConsumerState<HomeView>
     unawaited(ref.read(upcomingMoviesProvider.notifier).loadNextPage());
     unawaited(ref.read(popularMoviesProvider.notifier).loadNextPage());
     unawaited(ref.read(topRatedMoviesProvider.notifier).loadNextPage());
+    unawaited(ref.read(popularPeopleProvider.notifier).loadNextPage());
     super.initState();
   }
 

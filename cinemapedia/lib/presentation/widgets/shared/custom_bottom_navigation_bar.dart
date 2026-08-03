@@ -13,6 +13,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       currentIndex: pageViewIndex,
       onTap: (value) => onItemTapped(context, value),
       items: const [
@@ -20,6 +21,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.label_outline),
           label: 'Populars',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.people_outline),
+          label: 'People',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_outline),
