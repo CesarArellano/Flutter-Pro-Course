@@ -25,5 +25,30 @@ linter:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 
+    # --- Additions on top of flutter_lints, curated for this project ---
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - avoid_redundant_argument_values
+    - avoid_type_to_string
+    - avoid_unused_constructor_parameters
+    - avoid_void_async
+    - cancel_subscriptions
+    - close_sinks
+    - eol_at_end_of_file
+    - only_throw_errors
+    - prefer_asserts_with_message
+    - prefer_final_fields
+    - prefer_final_in_for_each
+    - prefer_final_locals
+    - require_trailing_commas
+    - sort_constructors_first
+    - type_annotate_public_apis
+    - unnecessary_parenthesis
+    - unnecessary_statements
+    - unreachable_from_main
+    - use_named_constants
+    - use_string_buffers
+    - use_super_parameters
+
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

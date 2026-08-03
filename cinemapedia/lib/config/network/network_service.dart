@@ -37,8 +37,7 @@ class NetworkService {
         },
       ),
       RetryInterceptor(dio: _dio, maxRetries: maxRetries),
-      if (kDebugMode)
-        LogInterceptor(requestBody: true, responseBody: false),
+      if (kDebugMode) LogInterceptor(requestBody: true),
     ]);
   }
 
@@ -52,7 +51,8 @@ class NetworkService {
     Options? options,
   }) {
     return _guard(
-      () => _dio.get<T>(path, queryParameters: queryParameters, options: options),
+      () =>
+          _dio.get<T>(path, queryParameters: queryParameters, options: options),
     );
   }
 

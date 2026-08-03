@@ -1,12 +1,6 @@
 import 'package:dio/dio.dart';
 
 class NetworkException implements Exception {
-  const NetworkException(this.message, {this.statusCode, this.error});
-
-  final String message;
-  final int? statusCode;
-  final Object? error;
-
   factory NetworkException.fromDioException(DioException exception) {
     switch (exception.type) {
       case DioExceptionType.connectionTimeout:
@@ -23,10 +17,7 @@ class NetworkException implements Exception {
           error: exception,
         );
       case DioExceptionType.cancel:
-        return NetworkException(
-          'The request was cancelled.',
-          error: exception,
-        );
+        return NetworkException('The request was cancelled.', error: exception);
       case DioExceptionType.badCertificate:
         return NetworkException(
           'The server certificate could not be verified.',
@@ -45,6 +36,11 @@ class NetworkException implements Exception {
         );
     }
   }
+  const NetworkException(this.message, {this.statusCode, this.error});
+
+  final String message;
+  final int? statusCode;
+  final Object? error;
 
   static String _messageForStatusCode(int? statusCode) {
     return switch (statusCode) {
@@ -53,7 +49,8 @@ class NetworkException implements Exception {
       403 => 'Access to this resource is denied.',
       404 => 'The requested resource was not found.',
       429 => 'Too many requests, please slow down.',
-      _ when statusCode != null && statusCode >= 500 => 'Server error, please try again later.',
+      _ when statusCode != null && statusCode >= 500 =>
+        'Server error, please try again later.',
       _ => 'Unexpected error${statusCode != null ? ' ($statusCode)' : ''}.',
     };
   }

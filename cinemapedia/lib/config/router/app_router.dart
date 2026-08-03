@@ -1,4 +1,3 @@
-
 import 'package:go_router/go_router.dart';
 
 import '../../presentation/screens/screens.dart';
@@ -10,23 +9,20 @@ final appRouter = GoRouter(
       path: '/home/:page',
       builder: (_, state) {
         final String pageViewIndex = state.pathParameters['page'] ?? '0';
-        return HomeScreen( pageIndex: int.parse(pageViewIndex) );
+        return HomeScreen(pageIndex: int.parse(pageViewIndex));
       },
       routes: [
         GoRoute(
           path: 'movie/:id',
           name: MovieScreen.name,
-          builder: (_, state)  {
+          builder: (_, state) {
             final String movieId = state.pathParameters['id'] ?? 'no-id';
-            return MovieScreen( movieId: movieId );
-          }
+            return MovieScreen(movieId: movieId);
+          },
         ),
-      ]
+      ],
     ),
-    GoRoute(
-      path: '/',
-      redirect: (_, _) => '/home/0',
-    ),
+    GoRoute(path: '/', redirect: (_, _) => '/home/0'),
     // ShellRoute Implementation
     // ShellRoute(
     //   builder: (_, __, child) => HomeScreen(
@@ -69,6 +65,5 @@ final appRouter = GoRouter(
     //     ),
     //   ]
     // ),
-  ]
+  ],
 );
-

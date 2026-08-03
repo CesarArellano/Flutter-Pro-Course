@@ -24,16 +24,16 @@ class RetryInterceptor extends Interceptor {
   static const _retryCountKey = 'retry_count';
 
   bool _shouldRetry(DioException error) {
-    final isRetryableMethod =
-        _retryableMethods.contains(error.requestOptions.method.toUpperCase());
+    final isRetryableMethod = _retryableMethods.contains(
+      error.requestOptions.method.toUpperCase(),
+    );
 
     final isTransientError = switch (error.type) {
       DioExceptionType.connectionTimeout ||
       DioExceptionType.sendTimeout ||
       DioExceptionType.receiveTimeout ||
       DioExceptionType.connectionError => true,
-      DioExceptionType.badResponse =>
-        (error.response?.statusCode ?? 0) >= 500,
+      DioExceptionType.badResponse => (error.response?.statusCode ?? 0) >= 500,
       _ => false,
     };
 

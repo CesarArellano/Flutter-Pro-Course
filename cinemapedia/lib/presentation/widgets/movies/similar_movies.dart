@@ -5,43 +5,38 @@ import '../../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
 import '../widgets.dart';
 
-
 final similarMoviesProvider = FutureProvider.family((ref, int movieId) {
   final movieRepository = ref.watch(moviesRepositoryProvider);
   return movieRepository.getSimilarMovies(movieId);
 });
 
 class SimilarMovies extends ConsumerWidget {
+  const SimilarMovies({super.key, required this.movieId});
 
   final int movieId;
 
-  const SimilarMovies({super.key, required this.movieId});
-
   @override
-  Widget build(BuildContext context, WidgetRef ref ) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final similarMoviesFuture = ref.watch(similarMoviesProvider(movieId));
 
     return similarMoviesFuture.when(
-      data: ( movies) => _Recomendations( movies: movies ), 
-      error: (_ , _) => const Center(child: Text('No se pudo cargar películas similares') ), 
-      loading: () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      data: (movies) => _Recomendations(movies: movies),
+      error: (_, _) =>
+          const Center(child: Text('No se pudo cargar películas similares')),
+      loading: () =>
+          const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
 }
 
 class _Recomendations extends StatelessWidget {
+  const _Recomendations({required this.movies});
   final List<Movie> movies;
-
-  const _Recomendations({ required this.movies });
 
   @override
   Widget build(BuildContext context) {
+    if (movies.isEmpty) return const SizedBox();
 
-    if ( movies.isEmpty ) return const SizedBox();
-
-    return MovieHorizontalListview(
-      title: 'Recomendations',
-      movies: movies
-    );
+    return MovieHorizontalListview(title: 'Recomendations', movies: movies);
   }
 }

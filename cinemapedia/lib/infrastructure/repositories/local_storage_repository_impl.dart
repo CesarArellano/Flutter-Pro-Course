@@ -3,9 +3,8 @@ import 'package:cinemapedia/domain/repositories/local_storage_repository.dart';
 import 'package:cinemapedia/infrastructure/datasources/drift_datasource.dart';
 
 class LocalStorageRepositoryImpl implements LocalStorageRepository {
-  final DriftDatasource datasource;
-
   LocalStorageRepositoryImpl(this.datasource);
+  final DriftDatasource datasource;
 
   @override
   Future<bool> isMovieFavorite(int movieId) {
@@ -13,16 +12,12 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
   }
 
   @override
-  Future<List<Movie>> loadMovies({int limit = 10, offset = 0}) {
-    return datasource.loadMovies(
-      limit: limit,
-      offset: offset
-    );
+  Future<List<Movie>> loadMovies({int limit = 10, int offset = 0}) {
+    return datasource.loadMovies(limit: limit, offset: offset);
   }
 
   @override
   Future<void> toggleFavorite(Movie movie) {
     return datasource.toggleFavorite(movie);
   }
-  
 }

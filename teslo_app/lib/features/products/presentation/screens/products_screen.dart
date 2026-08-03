@@ -33,7 +33,7 @@ class ProductsScreen extends ConsumerWidget {
                   initialProducts: ref.read(searchedMoviesProvider)
                 )
               ).then((product) {
-                if( product == null ) return;
+                if( product == null || !context.mounted ) return;
                 context.push('/product/${ product.id }');
               });
             }, 

@@ -9,7 +9,6 @@ import '../models/moviedb/moviedb_response.dart';
 import '../models/moviedb/moviedb_videos.dart';
 
 class MovieDbDatasource implements MoviesDatasource {
-
   MovieDbDatasource(this.networkService);
 
   final NetworkService networkService;
@@ -18,10 +17,9 @@ class MovieDbDatasource implements MoviesDatasource {
     final MovieDbResponse movieDbResponse = MovieDbResponse.fromJson(json);
 
     final List<Movie> movies = movieDbResponse.results
-    .map(
-      (movieDb) => MovieMapper.movieDBToEntity(movieDb)
-    )
-    .where((movieDb) => movieDb.posterPath != 'no-poster').toList();
+        .map((movieDb) => MovieMapper.movieDBToEntity(movieDb))
+        .where((movieDb) => movieDb.posterPath != 'no-poster')
+        .toList();
 
     return movies;
   }
@@ -30,73 +28,62 @@ class MovieDbDatasource implements MoviesDatasource {
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
     final response = await networkService.get(
       '/movie/now_playing',
-      queryParameters: {
-        'page': page
-      }
+      queryParameters: {'page': page},
     );
 
     return _jsonToMovies(response.data);
   }
-  
+
   @override
-  Future<List<Movie>> getPopular({int page = 1 }) async {
+  Future<List<Movie>> getPopular({int page = 1}) async {
     final response = await networkService.get(
       '/movie/popular',
-      queryParameters: {
-        'page': page
-      }
+      queryParameters: {'page': page},
     );
 
-    
     return _jsonToMovies(response.data);
   }
-  
+
   @override
   Future<List<Movie>> getTopRated({int page = 1}) async {
     final response = await networkService.get(
       '/movie/top_rated',
-      queryParameters: {
-        'page': page
-      }
+      queryParameters: {'page': page},
     );
 
-    
     return _jsonToMovies(response.data);
   }
-  
+
   @override
   Future<List<Movie>> getUpcoming({int page = 1}) async {
     final response = await networkService.get(
       '/movie/upcoming',
-      queryParameters: {
-        'page': page
-      }
+      queryParameters: {'page': page},
     );
 
-    
     return _jsonToMovies(response.data);
   }
-  
+
   @override
   Future<Movie> getMovieById(String id) async {
     final response = await networkService.get('/movie/$id');
 
-    if( response.statusCode != 200 ) throw Exception('Movie with id: $id not found');
+    if (response.statusCode != 200) {
+      throw Exception('Movie with id: $id not found');
+    }
 
     final movieDetails = MovieDetails.fromJson(response.data);
 
     return MovieMapper.movieDetailsToEntity(movieDetails);
   }
-  
+
   @override
   Future<List<Movie>> searchMovies(String query) async {
-    if( query.isEmpty ) return [];
-    
+    if (query.isEmpty) return [];
+
     final response = await networkService.get(
       '/search/movie',
-      queryParameters: {
-        'query': query
-      }
+      queryParameters: {'query': query},
     );
 
     return _jsonToMovies(response.data);
@@ -108,7 +95,6 @@ class MovieDbDatasource implements MoviesDatasource {
     return _jsonToMovies(response.data);
   }
 
-  
   @override
   Future<List<Video>> getYoutubeVideosById(int movieId) async {
     final response = await networkService.get('/movie/$movieId/videos');
@@ -116,7 +102,7 @@ class MovieDbDatasource implements MoviesDatasource {
     final videos = <Video>[];
 
     for (final moviedbVideo in moviedbVideosReponse.results) {
-      if ( moviedbVideo.site == 'YouTube' ) {
+      if (moviedbVideo.site == 'YouTube') {
         final video = VideoMapper.moviedbVideoToEntity(moviedbVideo);
         videos.add(video);
       }
@@ -124,6 +110,4 @@ class MovieDbDatasource implements MoviesDatasource {
 
     return videos;
   }
-
-
 }

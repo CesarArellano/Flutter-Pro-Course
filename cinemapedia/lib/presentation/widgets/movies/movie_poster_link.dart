@@ -6,27 +6,20 @@ import 'package:go_router/go_router.dart';
 import '../../../domain/entities/movie.dart';
 
 class MoviePosterLink extends StatelessWidget {
-  
+  const MoviePosterLink({super.key, required this.movie});
+
   final Movie movie;
-  
-  const MoviePosterLink({
-    super.key,
-    required this.movie
-  });
-  
+
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
       duration: const Duration(milliseconds: 600),
       child: GestureDetector(
-        onTap: () => context.push('/home/0/movie/${ movie.id }'),
+        onTap: () => context.push('/home/0/movie/${movie.id}'),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: FadeIn(
-            child: Image.network(
-              movie.posterPath.value(),
-              fit: BoxFit.cover,
-            ),
+            child: Image.network(movie.posterPath.value(), fit: BoxFit.cover),
           ),
         ),
       ),

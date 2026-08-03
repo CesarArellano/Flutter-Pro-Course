@@ -6,7 +6,7 @@ const messages = <String>[
   'Loading populars',
   'Calling to my girlfriend',
   'Almost there',
-  'This took longer than expected'
+  'This took longer than expected',
 ];
 
 Stream<String> getLoadingMessages() {
@@ -16,9 +16,7 @@ Stream<String> getLoadingMessages() {
 }
 
 class FullScreenLoader extends StatelessWidget {
-  
   const FullScreenLoader({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +26,17 @@ class FullScreenLoader extends StatelessWidget {
         children: [
           const Text('Please wait'),
           const SizedBox(height: 10),
-          const CircularProgressIndicator(strokeWidth: 2,),
+          const CircularProgressIndicator(strokeWidth: 2),
           const SizedBox(height: 10),
           StreamBuilder(
             stream: getLoadingMessages(),
             builder: (context, snapshot) {
-              if( !snapshot.hasData ) return const Text('Loading...');
+              if (!snapshot.hasData) return const Text('Loading...');
               return Text(snapshot.data!);
             },
-          )
+          ),
         ],
-      )
+      ),
     );
   }
 }

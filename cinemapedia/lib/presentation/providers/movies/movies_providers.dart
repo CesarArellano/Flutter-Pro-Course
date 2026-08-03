@@ -2,61 +2,51 @@ import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/providers/movies/movies_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final nowPlayingMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final fetchMoreMovies = ref.watch( moviesRepositoryProvider ).getNowPlaying;
-  
-  return MoviesNotifier(
-    fetchMoreMovies: fetchMoreMovies
-  );
-});
+final nowPlayingMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+      final fetchMoreMovies = ref.watch(moviesRepositoryProvider).getNowPlaying;
 
-final upcomingMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final getUpcomingMovies = ref.watch( moviesRepositoryProvider ).getUpcoming;
-  
-  return MoviesNotifier(
-    fetchMoreMovies: getUpcomingMovies
-  );
-});
+      return MoviesNotifier(fetchMoreMovies: fetchMoreMovies);
+    });
 
-final topRatedMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final getTopRatedMovies = ref.watch( moviesRepositoryProvider ).getTopRated;
-  
-  return MoviesNotifier(
-    fetchMoreMovies: getTopRatedMovies
-  );
-});
+final upcomingMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+      final getUpcomingMovies = ref.watch(moviesRepositoryProvider).getUpcoming;
 
+      return MoviesNotifier(fetchMoreMovies: getUpcomingMovies);
+    });
 
+final topRatedMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+      final getTopRatedMovies = ref.watch(moviesRepositoryProvider).getTopRated;
 
+      return MoviesNotifier(fetchMoreMovies: getTopRatedMovies);
+    });
 
-final popularMoviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final getPopularMovies = ref.watch( moviesRepositoryProvider ).getPopular;
-  
-  return MoviesNotifier(
-    fetchMoreMovies: getPopularMovies
-  );
-});
+final popularMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+      final getPopularMovies = ref.watch(moviesRepositoryProvider).getPopular;
+
+      return MoviesNotifier(fetchMoreMovies: getPopularMovies);
+    });
 
 // Definition of usecase
-typedef MovieCallback = Future<List<Movie>> Function({ int page });
+typedef MovieCallback = Future<List<Movie>> Function({int page});
 
 class MoviesNotifier extends StateNotifier<List<Movie>> {
-  
+  MoviesNotifier({required this.fetchMoreMovies}) : super([]);
+
   int currentPage = 0;
   bool isLoading = false;
   MovieCallback fetchMoreMovies;
 
-  MoviesNotifier({
-    required this.fetchMoreMovies,
-  }): super([]);
-
   Future<void> loadNextPage() async {
-    if( isLoading ) return;
+    if (isLoading) return;
     isLoading = true;
     currentPage++;
-    
-    final List<Movie> movies = await fetchMoreMovies( page: currentPage );
-    state = [ ...state, ...movies ];
+
+    final List<Movie> movies = await fetchMoreMovies(page: currentPage);
+    state = [...state, ...movies];
     await Future.delayed(const Duration(milliseconds: 300));
     isLoading = false;
   }

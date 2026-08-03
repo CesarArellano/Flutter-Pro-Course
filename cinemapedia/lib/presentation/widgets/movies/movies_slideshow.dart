@@ -8,12 +8,8 @@ import 'package:go_router/go_router.dart';
 import '../../../domain/entities/movie.dart';
 
 class MoviesSlideshow extends StatefulWidget {
+  const MoviesSlideshow({super.key, required this.movies});
   final List<Movie> movies;
-
-  const MoviesSlideshow({
-    super.key,
-    required this.movies
-  });
 
   @override
   State<MoviesSlideshow> createState() => _MoviesSlideshowState();
@@ -28,7 +24,7 @@ class _MoviesSlideshowState extends State<MoviesSlideshow> {
   void initState() {
     super.initState();
     _autoplayTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-      if( widget.movies.length < 2 ) return;
+      if (widget.movies.length < 2) return;
 
       final nextPage = (_currentPage + 1) % widget.movies.length;
       _controller.animateToItem(
@@ -70,10 +66,10 @@ class _MoviesSlideshowState extends State<MoviesSlideshow> {
             shape: const RoundedRectangleBorder(),
             onIndexChanged: (index) => setState(() => _currentPage = index),
             children: widget.movies
-              .map((movie) => _Slide(movie: movie))
-              .toList(),
+                .map((movie) => _Slide(movie: movie))
+                .toList(),
           ),
-          if( widget.movies.length > 1 )
+          if (widget.movies.length > 1)
             Padding(
               padding: const EdgeInsets.only(bottom: 6),
               child: _PageIndicator(
@@ -125,9 +121,7 @@ class _PageIndicator extends StatelessWidget {
 }
 
 class _Slide extends StatelessWidget {
-  const _Slide({
-    required this.movie
-  });
+  const _Slide({required this.movie});
 
   final Movie movie;
 
@@ -136,12 +130,8 @@ class _Slide extends StatelessWidget {
     final decoration = BoxDecoration(
       borderRadius: BorderRadius.circular(20),
       boxShadow: const [
-        BoxShadow(
-          color: Colors.black45,
-          blurRadius: 10,
-          offset: Offset(0, 10)
-        )
-      ]
+        BoxShadow(color: Colors.black45, blurRadius: 10, offset: Offset(0, 10)),
+      ],
     );
 
     return Padding(
@@ -154,20 +144,20 @@ class _Slide extends StatelessWidget {
             movie.backdropPath.value(),
             fit: BoxFit.cover,
             loadingBuilder: (context, child, loadingProgress) {
-              if( loadingProgress != null ) {
+              if (loadingProgress != null) {
                 return const DecoratedBox(
-                  decoration: BoxDecoration( color: Colors.black12),
+                  decoration: BoxDecoration(color: Colors.black12),
                 );
               }
 
               return GestureDetector(
                 child: FadeIn(child: child),
-                onTap: () => context.push('/home/0/movie/${ movie.id }'),
+                onTap: () => context.push('/home/0/movie/${movie.id}'),
               );
             },
-          )
+          ),
         ),
-      )
+      ),
     );
   }
 }

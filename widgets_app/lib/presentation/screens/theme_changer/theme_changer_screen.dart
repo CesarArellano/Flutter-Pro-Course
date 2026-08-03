@@ -44,21 +44,23 @@ class _ThemeChangerView extends ConsumerWidget {
     // final int selectedColor = ref.watch(selectedColorProvider);
 
 
-    return ListView.builder(
-      itemCount: colorList.length,
-      itemBuilder: (BuildContext context, int index) {
-        final color = colorList[index];
-        return RadioListTile(
-          title: Text('This color', style: TextStyle(color: color)),
-          subtitle: Text('${ color.toARGB32() }'),
-          activeColor: color,
-          value: index,
-          groupValue: appTheme.selectedColor,
-          onChanged: ( value ) {
-            ref.read(themeNotifierProvider.notifier).changerColorIndex(value ?? 0);
-          }
-        );
+    return RadioGroup(
+      onChanged: (value) {
+        ref.read(themeNotifierProvider.notifier).changerColorIndex(value ?? 0);
       },
+      groupValue: appTheme.selectedColor,
+      child: ListView.builder(
+        itemCount: colorList.length,
+        itemBuilder: (BuildContext context, int index) {
+          final color = colorList[index];
+          return RadioListTile(
+            title: Text('This color', style: TextStyle(color: color)),
+            subtitle: Text('${ color.toARGB32() }'),
+            activeColor: color,
+            value: index,
+          );
+        },
+      ),
     );
   }
 }

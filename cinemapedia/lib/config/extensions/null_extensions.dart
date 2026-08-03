@@ -32,7 +32,7 @@ extension DoubleNullExtensions on double? {
 }
 
 extension BoolNullExtension on bool? {
-  bool value([bool defaultValue = false]) {
+  bool value({bool defaultValue = false}) {
     return this ?? defaultValue;
   }
 }
@@ -42,6 +42,7 @@ extension ListExts on List {
     if (isEmpty) return null;
     return first;
   }
+
   dynamic get firstOrNull2 {
     if (isEmpty) return null;
     return first;

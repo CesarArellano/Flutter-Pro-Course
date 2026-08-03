@@ -11,8 +11,8 @@ class EmptyContainer extends StatelessWidget {
       child: Icon(
         Icons.movie_outlined,
         size: 130,
-        color:  isDarkTheme ?  Colors.white70 : Colors.black26,
-      )
+        color: isDarkTheme ? Colors.white70 : Colors.black26,
+      ),
     );
   }
 }

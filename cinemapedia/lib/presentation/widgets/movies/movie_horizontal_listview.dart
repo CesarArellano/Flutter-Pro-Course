@@ -7,32 +7,31 @@ import '../../../config/helpers/human_formats.dart';
 import '../../../domain/entities/movie.dart';
 
 class MovieHorizontalListview extends StatefulWidget {
-  final List<Movie> movies;
-  final String? title;
-  final String? subtitle;
-  final VoidCallback? loadNextPage;
-
   const MovieHorizontalListview({
     super.key,
     required this.movies,
     this.title,
     this.subtitle,
-    this.loadNextPage
+    this.loadNextPage,
   });
+  final List<Movie> movies;
+  final String? title;
+  final String? subtitle;
+  final VoidCallback? loadNextPage;
 
   @override
-  State<MovieHorizontalListview> createState() => _MovieHorizontalListviewState();
+  State<MovieHorizontalListview> createState() =>
+      _MovieHorizontalListviewState();
 }
 
 class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
-
   final scrollController = ScrollController();
 
   @override
   void initState() {
     scrollController.addListener(() {
       final position = scrollController.position;
-      if( position.pixels + 200 >= position.maxScrollExtent ) {
+      if (position.pixels + 200 >= position.maxScrollExtent) {
         widget.loadNextPage?.call();
       }
     });
@@ -51,24 +50,18 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
       height: 325,
       child: Column(
         children: [
-          if( widget.title != null || widget.subtitle != null )
-            _Header(
-              title: widget.title,
-              subtitle: widget.subtitle,
-            ),
+          if (widget.title != null || widget.subtitle != null)
+            _Header(title: widget.title, subtitle: widget.subtitle),
           const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
               controller: scrollController,
               scrollDirection: Axis.horizontal,
               itemCount: widget.movies.length,
-              itemBuilder: (context, index) => FadeInRight(
-                child: _Slide(
-                  movie: widget.movies[index]
-                ),
-              ),
+              itemBuilder: (context, index) =>
+                  FadeInRight(child: _Slide(movie: widget.movies[index])),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -76,13 +69,9 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
 }
 
 class _Header extends StatelessWidget {
+  const _Header({this.title, this.subtitle});
   final String? title;
   final String? subtitle;
-
-  const _Header({
-    this.title,
-    this.subtitle,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -91,15 +80,18 @@ class _Header extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
-          if( title != null )
-            Text(title!, style: const TextStyle( fontSize: 22, fontWeight: FontWeight.bold)),
+          if (title != null)
+            Text(
+              title!,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
           const Spacer(),
-          if( subtitle != null )
+          if (subtitle != null)
             FilledButton.tonal(
               style: const ButtonStyle(visualDensity: VisualDensity.compact),
               onPressed: () {},
-              child: Text(subtitle!)
-            )
+              child: Text(subtitle!),
+            ),
         ],
       ),
     );
@@ -107,11 +99,8 @@ class _Header extends StatelessWidget {
 }
 
 class _Slide extends StatelessWidget {
+  const _Slide({required this.movie});
   final Movie movie;
-  
-  const _Slide({
-    required this.movie
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -132,17 +121,15 @@ class _Slide extends StatelessWidget {
                   movie.posterPath.value(),
                   fit: BoxFit.cover,
                   loadingBuilder: (context, child, loadingProgress) {
-                    if( loadingProgress != null ) {
+                    if (loadingProgress != null) {
                       return const Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       );
                     }
-                      
+
                     return GestureDetector(
                       child: FadeIn(child: child),
-                      onTap: () => context.push('/home/0/movie/${ movie.id }'),
+                      onTap: () => context.push('/home/0/movie/${movie.id}'),
                     );
                   },
                 ),
@@ -150,26 +137,24 @@ class _Slide extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
-            movie.title.value(),
-            maxLines: 2,
-            style: textTheme.titleSmall,
-          ),
+          Text(movie.title.value(), maxLines: 2, style: textTheme.titleSmall),
           Row(
             children: [
               Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
               const SizedBox(width: 3),
               Text(
-                '${ movie.voteAverage }',
-                style: textTheme.bodyMedium?.copyWith(color:  Colors.yellow.shade800)
+                '${movie.voteAverage}',
+                style: textTheme.bodyMedium?.copyWith(
+                  color: Colors.yellow.shade800,
+                ),
               ),
               const Spacer(),
               Text(
                 HumanFormats.number(movie.popularity.value()),
-                style: textTheme.bodySmall
+                style: textTheme.bodySmall,
               ),
             ],
-          )
+          ),
         ],
       ),
     );
