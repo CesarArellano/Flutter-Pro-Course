@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import '../../../domain/entities/movie.dart';
+import '../../../domain/entities/tv_show.dart';
 import '../widgets.dart';
 
-class MovieMasonry extends StatefulWidget {
-  const MovieMasonry({
+class SeriesMasonry extends StatefulWidget {
+  const SeriesMasonry({
     super.key,
-    required this.movies,
+    required this.series,
     required this.loadNextPage,
   });
-  final List<Movie> movies;
+  final List<TvShow> series;
   final VoidCallback loadNextPage;
 
   @override
-  State<MovieMasonry> createState() => _MovieMasonryState();
+  State<SeriesMasonry> createState() => _SeriesMasonryState();
 }
 
-class _MovieMasonryState extends State<MovieMasonry> {
+class _SeriesMasonryState extends State<SeriesMasonry> {
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    // See SeriesHorizontalListview for why this self-bootstraps: Series
+    // lists are lazy-loaded, unlike Movies, which are preloaded elsewhere.
+    if (widget.series.isEmpty) widget.loadNextPage();
+
     _scrollController.addListener(() {
       final position = _scrollController.position;
 
@@ -40,6 +44,10 @@ class _MovieMasonryState extends State<MovieMasonry> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.series.isEmpty) {
+      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: MasonryGridView.count(
@@ -47,17 +55,19 @@ class _MovieMasonryState extends State<MovieMasonry> {
         crossAxisCount: 3,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        itemCount: widget.movies.length,
+        itemCount: widget.series.length,
         itemBuilder: (context, index) {
-          final moviePosterLink = MoviePosterLink(movie: widget.movies[index]);
+          final seriesPosterLink = SeriesPosterLink(
+            series: widget.series[index],
+          );
 
           if (index == 1) {
             return Column(
-              children: [const SizedBox(height:40), moviePosterLink],
+              children: [const SizedBox(height: 40), seriesPosterLink],
             );
           }
 
-          return moviePosterLink;
+          return seriesPosterLink;
         },
       ),
     );

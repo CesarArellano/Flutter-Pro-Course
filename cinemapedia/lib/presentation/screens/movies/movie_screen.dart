@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../config/extensions/null_extensions.dart';
@@ -11,7 +12,6 @@ import '../../../domain/entities/movie.dart';
 import '../../providers/movies/movie_info_provider.dart';
 import '../../providers/providers.dart';
 import '../../widgets/widgets.dart';
-
 class MovieScreen extends ConsumerStatefulWidget {
   const MovieScreen({super.key, required this.movieId});
 
@@ -409,49 +409,52 @@ class _CastCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
-    return Container(
-      width: 150,
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: isDarkTheme ? Colors.black38 : Colors.white,
-        boxShadow: const <BoxShadow>[
-          BoxShadow(blurRadius: 6, color: Colors.black12),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: FadeInImage(
-              placeholder: const AssetImage('assets/images/loading.gif'),
-              image: NetworkImage(actor.profilePath),
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 170,
+    return InkWell(
+      onTap: () => context.push('/home/0/person/${actor.id}'),
+      child: Container(
+        width: 150,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: isDarkTheme ? Colors.black38 : Colors.white,
+          boxShadow: const <BoxShadow>[
+            BoxShadow(blurRadius: 6, color: Colors.black12),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: FadeInImage(
+                placeholder: const AssetImage('assets/images/loading.gif'),
+                image: NetworkImage(actor.profilePath),
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 170,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Flexible(
-            child: Text(
-              actor.name,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 8),
+            Flexible(
+              child: Text(
+                actor.name,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          Flexible(
-            child: Text(
-              actor.character.value('No-character'),
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            Flexible(
+              child: Text(
+                actor.character.value('No-character'),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

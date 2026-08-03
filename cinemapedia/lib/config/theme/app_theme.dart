@@ -8,6 +8,7 @@ class AppTheme {
       useMaterial3: true,
       colorSchemeSeed: Colors.blueAccent,
       brightness: Brightness.dark,
+      splashFactory: InkSparkle.splashFactory,
     );
   }
 }

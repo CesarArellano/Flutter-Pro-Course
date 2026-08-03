@@ -28,6 +28,14 @@ final appRouter = GoRouter(
             return PersonScreen(personId: personId);
           },
         ),
+        GoRoute(
+          path: 'series/:id',
+          name: SeriesScreen.name,
+          builder: (_, state) {
+            final String seriesId = state.pathParameters['id'] ?? 'no-id';
+            return SeriesScreen(seriesId: seriesId);
+          },
+        ),
       ],
     ),
     GoRoute(path: '/', redirect: (_, _) => '/home/0'),
