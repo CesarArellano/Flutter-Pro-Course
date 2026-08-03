@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
-
-import '../../config/constants/environment.dart';
+import '../../config/network/network_service.dart';
 import '../../domain/datasources/movies_datasource.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/entities/video.dart';
@@ -12,13 +10,9 @@ import '../models/moviedb/moviedb_videos.dart';
 
 class MovieDbDatasource implements MoviesDatasource {
 
-  final dio = Dio(BaseOptions(
-    baseUrl: 'https://api.themoviedb.org/3',
-    queryParameters: {
-      'api_key': Environment.theMovieDbKey,
-      'language': 'es-MX',
-    }
-  ));
+  MovieDbDatasource(this.networkService);
+
+  final NetworkService networkService;
 
   List<Movie> _jsonToMovies(Map<String, dynamic> json) {
     final MovieDbResponse movieDbResponse = MovieDbResponse.fromJson(json);
@@ -34,7 +28,7 @@ class MovieDbDatasource implements MoviesDatasource {
 
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
-    final response = await dio.get(
+    final response = await networkService.get(
       '/movie/now_playing',
       queryParameters: {
         'page': page
@@ -46,7 +40,7 @@ class MovieDbDatasource implements MoviesDatasource {
   
   @override
   Future<List<Movie>> getPopular({int page = 1 }) async {
-    final response = await dio.get(
+    final response = await networkService.get(
       '/movie/popular',
       queryParameters: {
         'page': page
@@ -59,7 +53,7 @@ class MovieDbDatasource implements MoviesDatasource {
   
   @override
   Future<List<Movie>> getTopRated({int page = 1}) async {
-    final response = await dio.get(
+    final response = await networkService.get(
       '/movie/top_rated',
       queryParameters: {
         'page': page
@@ -72,7 +66,7 @@ class MovieDbDatasource implements MoviesDatasource {
   
   @override
   Future<List<Movie>> getUpcoming({int page = 1}) async {
-    final response = await dio.get(
+    final response = await networkService.get(
       '/movie/upcoming',
       queryParameters: {
         'page': page
@@ -85,7 +79,7 @@ class MovieDbDatasource implements MoviesDatasource {
   
   @override
   Future<Movie> getMovieById(String id) async {
-    final response = await dio.get('/movie/$id');
+    final response = await networkService.get('/movie/$id');
 
     if( response.statusCode != 200 ) throw Exception('Movie with id: $id not found');
 
@@ -98,7 +92,7 @@ class MovieDbDatasource implements MoviesDatasource {
   Future<List<Movie>> searchMovies(String query) async {
     if( query.isEmpty ) return [];
     
-    final response = await dio.get(
+    final response = await networkService.get(
       '/search/movie',
       queryParameters: {
         'query': query
@@ -110,14 +104,14 @@ class MovieDbDatasource implements MoviesDatasource {
 
   @override
   Future<List<Movie>> getSimilarMovies(int movieId) async {
-    final response = await dio.get('/movie/$movieId/similar');
+    final response = await networkService.get('/movie/$movieId/similar');
     return _jsonToMovies(response.data);
   }
 
   
   @override
   Future<List<Video>> getYoutubeVideosById(int movieId) async {
-    final response = await dio.get('/movie/$movieId/videos');
+    final response = await networkService.get('/movie/$movieId/videos');
     final moviedbVideosReponse = MoviedbVideosResponse.fromJson(response.data);
     final videos = <Video>[];
 
