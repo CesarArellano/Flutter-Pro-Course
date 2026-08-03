@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../config/helpers/human_formats.dart';
 import '../../../domain/entities/tv_show.dart';
+import '../shared/app_network_image.dart';
 
 class SeriesHorizontalListview extends StatefulWidget {
   const SeriesHorizontalListview({
@@ -126,23 +127,15 @@ class _Slide extends StatelessWidget {
           SizedBox(
             height: 200,
             child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  series.posterPath.value(),
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress != null) {
-                      return const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      );
-                    }
-
-                    return GestureDetector(
-                      child: FadeIn(child: child),
-                      onTap: () => context.push('/home/0/series/${series.id}'),
-                    );
-                  },
+              child: GestureDetector(
+                onTap: () => context.push('/home/0/series/${series.id}'),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: AppNetworkImage(
+                    imageUrl: series.posterPath.value(),
+                    width: 150,
+                    height: 200,
+                  ),
                 ),
               ),
             ),

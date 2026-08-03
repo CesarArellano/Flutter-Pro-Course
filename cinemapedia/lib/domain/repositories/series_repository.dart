@@ -10,4 +10,6 @@ abstract class SeriesRepository {
   Future<List<TvShow>> getTopRated({int page = 1});
 
   Future<TvShow> getSeriesById(String id);
+
+  Future<List<Actor>> getCastBySeries(String seriesId);
 }

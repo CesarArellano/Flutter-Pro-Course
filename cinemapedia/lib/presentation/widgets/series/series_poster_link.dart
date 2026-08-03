@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/tv_show.dart';
+import '../shared/app_network_image.dart';
 
 class SeriesPosterLink extends StatelessWidget {
   const SeriesPosterLink({super.key, required this.series});
@@ -18,8 +19,9 @@ class SeriesPosterLink extends StatelessWidget {
         onTap: () => context.push('/home/0/series/${series.id}'),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: FadeIn(
-            child: Image.network(series.posterPath.value(), fit: BoxFit.cover),
+          child: AppNetworkImage(
+            imageUrl: series.posterPath.value(),
+            width: MediaQuery.sizeOf(context).width / 3,
           ),
         ),
       ),

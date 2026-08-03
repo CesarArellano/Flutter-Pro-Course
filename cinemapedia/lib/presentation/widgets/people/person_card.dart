@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/person.dart';
+import '../shared/app_network_image.dart';
 
 class PersonCard extends StatelessWidget {
   const PersonCard({super.key, required this.person});
@@ -22,8 +23,9 @@ class PersonCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: FadeIn(
-                child: Image.network(person.profilePath, fit: BoxFit.cover),
+              child: AppNetworkImage(
+                imageUrl: person.profilePath,
+                width: MediaQuery.sizeOf(context).width / 3,
               ),
             ),
             const SizedBox(height: 5),

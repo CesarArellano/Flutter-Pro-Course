@@ -1,3 +1,4 @@
+import '../../domain/entities/actor.dart';
 import '../../domain/entities/tv_show.dart';
 import '../../domain/repositories/series_repository.dart';
 import '../datasources/tv_moviedb_datasource.dart';
@@ -30,5 +31,10 @@ class SeriesRepositoryImpl implements SeriesRepository {
   @override
   Future<TvShow> getSeriesById(String id) {
     return datasource.getSeriesById(id);
+  }
+
+  @override
+  Future<List<Actor>> getCastBySeries(String seriesId) {
+    return datasource.getCastBySeries(seriesId);
   }
 }

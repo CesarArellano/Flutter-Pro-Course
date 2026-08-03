@@ -1,7 +1,10 @@
 import '../../config/network/network_service.dart';
 import '../../domain/datasources/series_datasource.dart';
+import '../../domain/entities/actor.dart';
 import '../../domain/entities/tv_show.dart';
+import '../mappers/actor_mapper.dart';
 import '../mappers/tv_mapper.dart';
+import '../models/moviedb/credits_reponse.dart';
 import '../models/moviedb/tv_details.dart';
 import '../models/moviedb/tv_moviedb.dart';
 
@@ -72,5 +75,18 @@ class TvMovieDbDatasource implements SeriesDatasource {
     final tvDetails = TvDetails.fromJson(response.data);
 
     return TvMapper.tvDetailsToEntity(tvDetails);
+  }
+
+  @override
+  Future<List<Actor>> getCastBySeries(String seriesId) async {
+    final response = await networkService.get('/tv/$seriesId/credits');
+
+    final CreditsResponse creditsResponse = CreditsResponse.fromJson(
+      response.data,
+    );
+
+    return creditsResponse.cast
+        .map((actor) => ActorMapper.castToEntity(actor))
+        .toList();
   }
 }

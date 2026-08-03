@@ -1,3 +1,5 @@
+import 'tv_season.dart';
+
 class TvShow {
   TvShow({
     required this.adult,
@@ -16,6 +18,7 @@ class TvShow {
     required this.numberOfSeasons,
     required this.numberOfEpisodes,
     required this.status,
+    this.lastSeason,
   });
   final bool? adult;
   final String? backdropPath;
@@ -33,4 +36,5 @@ class TvShow {
   final int? numberOfSeasons;
   final int? numberOfEpisodes;
   final String? status;
+  final TvSeason? lastSeason;
 }

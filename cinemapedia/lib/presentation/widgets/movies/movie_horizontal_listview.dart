@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../config/helpers/human_formats.dart';
 import '../../../domain/entities/movie.dart';
+import '../shared/app_network_image.dart';
 
 class MovieHorizontalListview extends StatefulWidget {
   const MovieHorizontalListview({
@@ -116,23 +117,15 @@ class _Slide extends StatelessWidget {
           SizedBox(
             height: 200,
             child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  movie.posterPath.value(),
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress != null) {
-                      return const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      );
-                    }
-
-                    return GestureDetector(
-                      child: FadeIn(child: child),
-                      onTap: () => context.push('/home/0/movie/${movie.id}'),
-                    );
-                  },
+              child: GestureDetector(
+                onTap: () => context.push('/home/0/movie/${movie.id}'),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: AppNetworkImage(
+                    imageUrl: movie.posterPath.value(),
+                    width: 150,
+                    height: 200,
+                  ),
                 ),
               ),
             ),

@@ -8,6 +8,7 @@ export 'package:cinemapedia/presentation/widgets/people/person_movie_credits.dar
 export 'package:cinemapedia/presentation/widgets/series/series_horizontal_listview.dart';
 export 'package:cinemapedia/presentation/widgets/series/series_masonry.dart';
 export 'package:cinemapedia/presentation/widgets/series/series_poster_link.dart';
+export 'package:cinemapedia/presentation/widgets/shared/app_network_image.dart';
 export 'package:cinemapedia/presentation/widgets/shared/content_slideshow.dart';
 export 'package:cinemapedia/presentation/widgets/shared/custom_appbar.dart';
 export 'package:cinemapedia/presentation/widgets/shared/custom_bottom_navigation_bar.dart';

@@ -1,14 +1,11 @@
 class CreditsResponse {
-  factory CreditsResponse.fromJson(Map<String, dynamic> json) =>
-      CreditsResponse(
-        id: json["id"],
-        cast: List<Cast>.from(
-          (json["cast"] as List).map((x) => Cast.fromJson(x)),
-        ),
-        crew: List<Cast>.from(
-          (json["crew"] as List).map((x) => Cast.fromJson(x)),
-        ),
-      );
+  factory CreditsResponse.fromJson(
+    Map<String, dynamic> json,
+  ) => CreditsResponse(
+    id: json["id"],
+    cast: List<Cast>.from((json["cast"] as List).map((x) => Cast.fromJson(x))),
+    crew: List<Cast>.from((json["crew"] as List).map((x) => Cast.fromJson(x))),
+  );
   CreditsResponse({required this.id, required this.cast, required this.crew});
 
   final int id;

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/extensions/null_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../providers/providers.dart';
+import 'app_network_image.dart';
 
 class _SlideItem {
   const _SlideItem({
@@ -220,18 +220,10 @@ class _Slide extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.network(
-                slide.imageUrl,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return const DecoratedBox(
-                      decoration: BoxDecoration(color: Colors.black12),
-                    );
-                  }
-
-                  return FadeIn(child: child);
-                },
+              AppNetworkImage(
+                imageUrl: slide.imageUrl,
+                width: MediaQuery.sizeOf(context).width * 0.8,
+                height: 210,
               ),
               const DecoratedBox(
                 decoration: BoxDecoration(

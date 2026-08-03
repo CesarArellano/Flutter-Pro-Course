@@ -9,6 +9,7 @@ export 'people/people_providers.dart';
 export 'people/people_repository_provider.dart';
 export 'people/person_info_provider.dart';
 export 'search/search_movies_provider.dart';
+export 'series/series_cast_provider.dart';
 export 'series/series_info_provider.dart';
 export 'series/series_providers.dart';
 export 'series/series_repository_provider.dart';

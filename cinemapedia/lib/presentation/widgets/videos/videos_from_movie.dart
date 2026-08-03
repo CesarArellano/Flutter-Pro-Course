@@ -93,10 +93,8 @@ class _YouTubeVideoPlayerState extends State<_YouTubeVideoPlayer> {
 
   @override
   void dispose() {
-    
     super.dispose();
   }
-  
 
   @override
   Widget build(BuildContext context) {

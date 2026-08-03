@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../config/extensions/null_extensions.dart';
 import '../../../domain/entities/movie_credit.dart';
 import '../../providers/providers.dart';
+import '../shared/app_network_image.dart';
 
 final personMovieCreditsProvider = FutureProvider.family((ref, int personId) {
   final peopleRepository = ref.watch(peopleRepositoryProvider);
@@ -89,12 +90,11 @@ class _CreditCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/images/loading.gif'),
-                image: NetworkImage(credit.posterPath),
-                fit: BoxFit.cover,
+              child: AppNetworkImage(
+                imageUrl: credit.posterPath,
                 width: double.infinity,
                 height: 170,
+                cacheWidth: 150,
               ),
             ),
             const SizedBox(height: 8),

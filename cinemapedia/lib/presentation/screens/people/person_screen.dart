@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -67,14 +66,10 @@ class _CustomSliverAppbar extends StatelessWidget {
         background: Stack(
           children: [
             SizedBox.expand(
-              child: Image.network(
-                person.profilePath,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) return const SizedBox();
-
-                  return FadeIn(child: child);
-                },
+              child: AppNetworkImage(
+                imageUrl: person.profilePath,
+                width: size.width,
+                height: size.height * 0.5,
               ),
             ),
             const SizedBox.expand(
@@ -116,9 +111,7 @@ class _PersonDetails extends StatelessWidget {
 }
 
 class _HeaderDetails extends StatelessWidget {
-  const _HeaderDetails({
-    required this.person,
-  });
+  const _HeaderDetails({required this.person});
 
   final Person person;
 
@@ -137,8 +130,8 @@ class _HeaderDetails extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              person.profilePath.value(),
+            child: AppNetworkImage(
+              imageUrl: person.profilePath.value(),
               width: size.width * 0.3,
             ),
           ),

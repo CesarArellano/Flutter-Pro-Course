@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +11,7 @@ import '../../../domain/entities/movie.dart';
 import '../../providers/movies/movie_info_provider.dart';
 import '../../providers/providers.dart';
 import '../../widgets/widgets.dart';
+
 class MovieScreen extends ConsumerStatefulWidget {
   const MovieScreen({super.key, required this.movieId});
 
@@ -79,14 +79,10 @@ class _CustomSliverAppbar extends ConsumerWidget {
         background: Stack(
           children: [
             SizedBox.expand(
-              child: Image.network(
-                movie.posterPath.value(),
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) return const SizedBox();
-
-                  return FadeIn(child: child);
-                },
+              child: AppNetworkImage(
+                imageUrl: movie.posterPath.value(),
+                width: size.width,
+                height: size.height * 0.7,
               ),
             ),
             const SizedBox.expand(
@@ -150,7 +146,6 @@ class _MovieDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -168,31 +163,27 @@ class _MovieDetails extends StatelessWidget {
 }
 
 class HeaderDetails extends StatelessWidget {
-  const HeaderDetails({
-    super.key,
-    required this.movie,
-  });
+  const HeaderDetails({super.key, required this.movie});
 
   final Movie movie;
 
   @override
   Widget build(BuildContext context) {
-
     final size = MediaQuery.of(context).size;
     final textStyles = Theme.of(context).textTheme;
     const TextStyle chipTextStyle = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
     );
-    
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              movie.posterPath.value(),
+            child: AppNetworkImage(
+              imageUrl: movie.posterPath.value(),
               width: size.width * 0.3,
             ),
           ),
@@ -427,12 +418,11 @@ class _CastCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/images/loading.gif'),
-                image: NetworkImage(actor.profilePath),
-                fit: BoxFit.cover,
+              child: AppNetworkImage(
+                imageUrl: actor.profilePath,
                 width: double.infinity,
                 height: 170,
+                cacheWidth: 150,
               ),
             ),
             const SizedBox(height: 8),

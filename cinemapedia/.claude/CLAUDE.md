@@ -5,11 +5,12 @@ practices.
 > Verified against this repo (2026-08-03): Flutter 3.44.4 (stable) / Dart 3.12.2, `flutter_riverpod`
 > ^2.3.6 (StateNotifier-based, no code generation), `go_router` ^17.3.0 (declarative, path-param
 > based), `dio` ^5.11.0 behind a hand-rolled `NetworkService`, `drift` ^2.34.3 for local persistence,
-> `flutter_dotenv` for secrets, `flutter_lints` ^6.0.0 plus a curated set of extra lints in
-> `analysis_options.yaml`. No `freezed`/`json_serializable`/riverpod code generation anywhere in this
-> repo — JSON models are hand-written. Only one test file exists (`test/widget_test.dart`, the
-> default counter-app scaffold, not a real test) — treat "Testing" below as the convention to adopt
-> going forward, not an established pattern to match.
+> `cached_network_image` ^3.4.1 behind a hand-rolled `AppNetworkImage` widget, `flutter_dotenv` for
+> secrets, `flutter_lints` ^6.0.0 plus a curated set of extra lints in `analysis_options.yaml`. No
+> `freezed`/`json_serializable`/riverpod code generation anywhere in this repo — JSON models are
+> hand-written. Only one test file exists (`test/widget_test.dart`, the default counter-app
+> scaffold, not a real test) — treat "Testing" below as the convention to adopt going forward, not
+> an established pattern to match.
 
 ## Project overview
 
@@ -134,6 +135,25 @@ as `NetworkException`, never as raw `DioException`.
   `_decodeGenreIds`) since Drift columns are scalar — follow this convention for any new
   list-of-primitives column rather than introducing a JSON column ad hoc.
 
+### Images
+
+Every network image goes through `AppNetworkImage`
+(`lib/presentation/widgets/shared/app_network_image.dart`), never a bare `Image.network` or
+`FadeInImage`+`NetworkImage` — it wraps `cached_network_image` with this app's standard
+placeholder (a `black12` box), error state (a `broken_image_outlined` icon), and fade-in, and caps
+decode resolution to what's actually rendered via `cacheDimension`
+(`lib/config/helpers/image_cache_dimensions.dart`, a `logicalSize * devicePixelRatio` helper) so a
+150dp poster tile doesn't decode a full TMDB `w500` image.
+
+- Pass `width`/`height` as normal — `AppNetworkImage` uses them for both layout and cache sizing.
+- If the actual layout width/height is `double.infinity` (filling an already-sized parent, e.g. a
+  card `Container(width: 150, ...)`), pass the real target size via `cacheWidth`/`cacheHeight`
+  instead — an infinite value can't be used to compute a cache size (see the `_CastCard`/
+  `_CreditCard` usages in `movie_screen.dart`/`person_movie_credits.dart` for the pattern).
+- The two "no image available" fallback URLs (poster/backdrop vs. profile photo) live in
+  `ImagePlaceholders` (`lib/config/constants/image_placeholders.dart`) — reference those constants
+  from a mapper rather than inlining the URL string again.
+
 ### JSON / API models
 
 Hand-written model classes under `infrastructure/models/moviedb/`, one per TMDB response shape,
@@ -203,6 +223,9 @@ they'll be overwritten on next sync; the three project-specific skills below liv
   belongs in `infrastructure/mappers/`.
 - Don't add a duplicate extension member for something that already exists in
   `lib/config/extensions/` (e.g. two near-identical `firstOrNull` getters) — consolidate instead.
+- Don't use a bare `Image.network`/`FadeInImage`+`NetworkImage` — use `AppNetworkImage` so caching,
+  resolution-capping, and the placeholder/error treatment stay consistent app-wide.
+- Don't inline the "no image available" placeholder URLs again — use `ImagePlaceholders`.
 - Don't retry non-idempotent HTTP methods or blanket-retry 4xx responses in any interceptor.
 - Don't log request/response bodies outside `kDebugMode`.
 - Don't skip the `.env` setup step and hardcode `THE_MOVIEDB_KEY` inline as a workaround.

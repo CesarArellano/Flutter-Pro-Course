@@ -1,3 +1,4 @@
+import 'package:cinemapedia/config/constants/image_placeholders.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemapedia/infrastructure/models/moviedb/movie_moviedb.dart';
@@ -7,7 +8,7 @@ class MovieMapper {
     adult: movieDb.adult,
     backdropPath: (movieDb.backdropPath != '')
         ? 'https://image.tmdb.org/t/p/w500${movieDb.backdropPath}'
-        : 'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg',
+        : ImagePlaceholders.posterNotFound,
     genreIds: [...movieDb.genreIds.map((genreId) => genreId.toString())],
     id: movieDb.id,
     originalLanguage: movieDb.originalLanguage,
@@ -31,7 +32,7 @@ class MovieMapper {
     adult: movieDb.adult,
     backdropPath: (movieDb.backdropPath != '')
         ? 'https://image.tmdb.org/t/p/w500${movieDb.backdropPath}'
-        : 'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg',
+        : ImagePlaceholders.posterNotFound,
     genreIds: [...(movieDb.genres ?? []).map((genre) => genre.name ?? '')],
     id: movieDb.id,
     originalLanguage: movieDb.originalLanguage,
@@ -40,7 +41,7 @@ class MovieMapper {
     popularity: movieDb.popularity,
     posterPath: (movieDb.posterPath != '')
         ? 'https://image.tmdb.org/t/p/w500${movieDb.posterPath}'
-        : 'https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg',
+        : ImagePlaceholders.posterNotFound,
     releaseDate: movieDb.releaseDate,
     title: movieDb.title,
     video: movieDb.video,

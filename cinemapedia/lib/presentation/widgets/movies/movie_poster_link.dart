@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/movie.dart';
+import '../shared/app_network_image.dart';
 
 class MoviePosterLink extends StatelessWidget {
   const MoviePosterLink({super.key, required this.movie});
@@ -18,8 +19,9 @@ class MoviePosterLink extends StatelessWidget {
         onTap: () => context.push('/home/0/movie/${movie.id}'),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: FadeIn(
-            child: Image.network(movie.posterPath.value(), fit: BoxFit.cover),
+          child: AppNetworkImage(
+            imageUrl: movie.posterPath.value(),
+            width: MediaQuery.sizeOf(context).width / 3,
           ),
         ),
       ),
