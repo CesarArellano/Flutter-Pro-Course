@@ -11,13 +11,7 @@ import '../../providers/providers.dart';
 
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
-
-  /// Total height (status bar + bar content) — used by screens that overlay
-  /// this bar on top of scrolling content (see [HomeScreen]) to pad that
-  /// content so it starts below the bar, then scrolls underneath it.
-  static double height(BuildContext context) =>
-      MediaQuery.paddingOf(context).top + kToolbarHeight;
-
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -38,7 +32,7 @@ class CustomAppbar extends ConsumerWidget {
                 children: [
                   Icon(Icons.movie_outlined, color: colors.primary),
                   const SizedBox(width: 5),
-                  Text('Cinemapedia', style: titleStyle),
+                  Text('Clappy', style: titleStyle),
                   const Spacer(),
                   IconButton(
                     onPressed: () {

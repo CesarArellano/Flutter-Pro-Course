@@ -19,14 +19,9 @@ class PopularViewState extends ConsumerState<PopularView>
 
     final contentType = ref.watch(contentTypeProvider);
 
-    // CustomAppbar is mounted once by HomeScreen, overlaid on top of every
-    // tab — this only needs to pad its own content so it starts below the
-    // bar, then scrolls up underneath its blur.
-    final barHeight = CustomAppbar.height(context);
-
     return switch (contentType) {
-      ContentType.movies => _PopularMovies(topPadding: barHeight),
-      ContentType.series => _PopularSeries(topPadding: barHeight),
+      ContentType.movies => const _PopularMovies(topPadding: 0),
+      ContentType.series => const _PopularSeries(topPadding: 0),
     };
   }
 

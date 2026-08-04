@@ -1,6 +1,6 @@
-import 'package:cinemapedia/domain/entities/movie.dart';
-import 'package:cinemapedia/domain/repositories/local_storage_repository.dart';
-import 'package:cinemapedia/infrastructure/datasources/drift_datasource.dart';
+import 'package:clappy/domain/entities/movie.dart';
+import 'package:clappy/domain/repositories/local_storage_repository.dart';
+import 'package:clappy/infrastructure/datasources/drift_datasource.dart';
 
 class LocalStorageRepositoryImpl implements LocalStorageRepository {
   LocalStorageRepositoryImpl(this.datasource);

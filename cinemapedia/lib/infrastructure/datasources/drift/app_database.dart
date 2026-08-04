@@ -39,6 +39,6 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'cinemapedia');
+    return driftDatabase(name: 'clappy');
   }
 }

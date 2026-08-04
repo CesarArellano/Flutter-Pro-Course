@@ -1,4 +1,4 @@
-# cinemapedia
+# clappy
 
 # Dev
 1.- Copy env.template file and rename by .env

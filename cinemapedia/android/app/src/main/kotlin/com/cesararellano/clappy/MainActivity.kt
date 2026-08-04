@@ -1,4 +1,4 @@
-package com.cesararellano.cinemapedia
+package com.cesararellano.clappy
 
 import io.flutter.embedding.android.FlutterActivity
 

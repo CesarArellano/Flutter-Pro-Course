@@ -47,7 +47,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
       body: FogEdgeBlur(
         edgeAlign: EdgeAlign.top,
         sigma: 20,
-        fogEdgeChild: FogEdgeChild(heightEdge: CustomAppbar.height(context)),
+        fogEdgeChild: FogEdgeChild(heightEdge: kToolbarHeight - 10),
         child: CustomScrollView(
           physics: const ClampingScrollPhysics(),
           slivers: [

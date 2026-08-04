@@ -1,7 +1,7 @@
-import 'package:cinemapedia/config/constants/image_placeholders.dart';
-import 'package:cinemapedia/domain/entities/movie.dart';
-import 'package:cinemapedia/infrastructure/models/moviedb/movie_details.dart';
-import 'package:cinemapedia/infrastructure/models/moviedb/movie_moviedb.dart';
+import 'package:clappy/config/constants/image_placeholders.dart';
+import 'package:clappy/domain/entities/movie.dart';
+import 'package:clappy/infrastructure/models/moviedb/movie_details.dart';
+import 'package:clappy/infrastructure/models/moviedb/movie_moviedb.dart';
 
 class MovieMapper {
   static Movie movieDBToEntity(MovieMovieDB movieDb) => Movie(

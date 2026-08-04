@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia/config/helpers/human_formats.dart';
+import 'package:clappy/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/extensions/null_extensions.dart';

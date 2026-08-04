@@ -1,5 +1,5 @@
-import 'package:cinemapedia/domain/entities/movie.dart';
-import 'package:cinemapedia/presentation/providers/movies/movies_repository_provider.dart';
+import 'package:clappy/domain/entities/movie.dart';
+import 'package:clappy/presentation/providers/movies/movies_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Each provider calls loadNextPage() immediately on creation rather than

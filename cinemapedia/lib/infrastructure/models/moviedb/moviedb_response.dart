@@ -1,4 +1,4 @@
-import 'package:cinemapedia/infrastructure/models/moviedb/movie_moviedb.dart';
+import 'package:clappy/infrastructure/models/moviedb/movie_moviedb.dart';
 
 class MovieDbResponse {
   MovieDbResponse({

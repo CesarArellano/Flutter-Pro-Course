@@ -51,7 +51,7 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
       body: FogEdgeBlur(
         edgeAlign: EdgeAlign.top,
         sigma: 20,
-        fogEdgeChild: FogEdgeChild(heightEdge: kToolbarHeight),
+        fogEdgeChild: FogEdgeChild(heightEdge: kToolbarHeight - 10),
         child: CustomScrollView(
           physics: const ClampingScrollPhysics(),
           slivers: [
@@ -425,19 +425,15 @@ class _CastCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
-    return InkWell(
-      onTap: () => context.push('/home/0/person/${actor.id}'),
-      child: Container(
-        width: 150,
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: isDarkTheme ? Colors.black38 : Colors.white,
-          boxShadow: const <BoxShadow>[
-            BoxShadow(blurRadius: 6, color: Colors.black12),
-          ],
-        ),
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      color: isDarkTheme ? Colors.black38 : Colors.white,
+      elevation: 6,
+      child: InkWell(
+        onTap: () => context.push('/home/0/person/${actor.id}'),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -470,7 +466,7 @@ class _CastCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      )
     );
   }
 }

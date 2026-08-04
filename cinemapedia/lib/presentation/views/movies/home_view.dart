@@ -48,12 +48,6 @@ class _HomeViewState extends ConsumerState<HomeView>
 
     return CustomScrollView(
       slivers: [
-        // Plain spacer, not a bar — CustomAppbar itself is mounted once by
-        // HomeScreen, overlaid on top of every tab. This just reserves the
-        // space so content starts below it, then scrolls up underneath.
-        SliverToBoxAdapter(
-          child: SizedBox(height: CustomAppbar.height(context)),
-        ),
         SliverList(
           delegate: SliverChildListDelegate.fixed([
             Padding(

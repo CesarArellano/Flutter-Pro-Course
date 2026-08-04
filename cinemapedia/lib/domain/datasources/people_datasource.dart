@@ -1,4 +1,4 @@
-import 'package:cinemapedia/domain/entities/entities.dart';
+import 'package:clappy/domain/entities/entities.dart';
 
 abstract class PeopleDatasource {
   Future<List<Person>> getPopular({int page = 1});

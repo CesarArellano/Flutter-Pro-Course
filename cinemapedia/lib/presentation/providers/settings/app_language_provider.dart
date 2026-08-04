@@ -1,6 +1,6 @@
-import 'package:cinemapedia/domain/entities/app_language.dart';
-import 'package:cinemapedia/infrastructure/repositories/settings_repository_impl.dart';
-import 'package:cinemapedia/presentation/providers/settings/settings_repository_provider.dart';
+import 'package:clappy/domain/entities/app_language.dart';
+import 'package:clappy/infrastructure/repositories/settings_repository_impl.dart';
+import 'package:clappy/presentation/providers/settings/settings_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final appLanguageProvider =

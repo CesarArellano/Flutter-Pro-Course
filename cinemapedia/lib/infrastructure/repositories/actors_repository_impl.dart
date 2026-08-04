@@ -1,6 +1,6 @@
-import 'package:cinemapedia/domain/entities/actor.dart';
-import 'package:cinemapedia/domain/repositories/actors_repository.dart';
-import 'package:cinemapedia/infrastructure/datasources/actor_moviedb_datasource.dart';
+import 'package:clappy/domain/entities/actor.dart';
+import 'package:clappy/domain/repositories/actors_repository.dart';
+import 'package:clappy/infrastructure/datasources/actor_moviedb_datasource.dart';
 
 class ActorsRepositoryImpl implements ActorsRepository {
   ActorsRepositoryImpl(this.datasource);

@@ -1,4 +1,4 @@
-import 'package:cinemapedia/domain/entities/entities.dart';
+import 'package:clappy/domain/entities/entities.dart';
 
 abstract class SeriesDatasource {
   Future<List<TvShow>> getAiringToday({int page = 1});

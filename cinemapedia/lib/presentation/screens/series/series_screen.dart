@@ -15,7 +15,6 @@ import '../../../l10n/app_localizations.dart';
 import '../../providers/series/series_cast_provider.dart';
 import '../../providers/series/series_info_provider.dart';
 import '../../widgets/shared/app_network_image.dart';
-import '../../widgets/shared/custom_appbar.dart';
 
 class SeriesScreen extends ConsumerStatefulWidget {
   const SeriesScreen({super.key, required this.seriesId});
@@ -55,7 +54,7 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
       body: FogEdgeBlur(
         edgeAlign: EdgeAlign.top,
         sigma: 20,
-        fogEdgeChild: FogEdgeChild(heightEdge: CustomAppbar.height(context)),
+        fogEdgeChild: FogEdgeChild(heightEdge: kToolbarHeight - 10),
         child: CustomScrollView(
           physics: const ClampingScrollPhysics(),
           slivers: [

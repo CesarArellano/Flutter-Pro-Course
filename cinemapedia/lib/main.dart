@@ -55,7 +55,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
-      title: 'Cinemapedia',
+      title: 'clappy',
       theme: const AppTheme().light,
       darkTheme: const AppTheme().dark,
       themeMode: ref.watch(themePreferenceProvider).themeMode,

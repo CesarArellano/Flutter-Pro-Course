@@ -1,5 +1,5 @@
-import 'package:cinemapedia/domain/entities/person.dart';
-import 'package:cinemapedia/presentation/providers/people/people_repository_provider.dart';
+import 'package:clappy/domain/entities/person.dart';
+import 'package:clappy/presentation/providers/people/people_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final personInfoProvider =

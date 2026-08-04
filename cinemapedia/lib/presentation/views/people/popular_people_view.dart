@@ -19,11 +19,6 @@ class PopularPeopleViewState extends ConsumerState<PopularPeopleView>
 
     final popularPeople = ref.watch(popularPeopleProvider);
 
-    // CustomAppbar is mounted once by HomeScreen, overlaid on top of every
-    // tab — this only needs to pad its own content so it starts below the
-    // bar, then scrolls up underneath its blur.
-    final barHeight = CustomAppbar.height(context);
-
     if (popularPeople.isEmpty) {
       return const Center(child: CircularProgressIndicator(strokeWidth: 2));
     }
@@ -32,7 +27,6 @@ class PopularPeopleViewState extends ConsumerState<PopularPeopleView>
       loadNextPage: () =>
           ref.read(popularPeopleProvider.notifier).loadNextPage(),
       people: popularPeople,
-      topPadding: barHeight,
     );
   }
 

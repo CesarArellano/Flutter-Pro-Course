@@ -1,5 +1,5 @@
-import 'package:cinemapedia/domain/entities/tv_show.dart';
-import 'package:cinemapedia/presentation/providers/series/series_repository_provider.dart';
+import 'package:clappy/domain/entities/tv_show.dart';
+import 'package:clappy/presentation/providers/series/series_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final airingTodaySeriesProvider =

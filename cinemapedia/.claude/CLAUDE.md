@@ -14,7 +14,7 @@ practices.
 
 ## Project overview
 
-Cinemapedia — a movie browser app (now playing / popular / top rated / upcoming, movie detail,
+clappy — a movie browser app (now playing / popular / top rated / upcoming, movie detail,
 search, favorites) backed by The Movie DB API, with offline favorites persisted locally via Drift.
 
 ## Commands

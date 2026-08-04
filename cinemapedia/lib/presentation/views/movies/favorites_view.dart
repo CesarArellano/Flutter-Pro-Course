@@ -81,7 +81,6 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>
     return MovieMasonry(
       movies: favoriteMovies,
       loadNextPage: loadNextPage,
-      topPadding: CustomAppbar.height(context),
     );
   }
 }
