@@ -1,9 +1,0 @@
-export 'package:clappy/domain/entities/actor.dart';
-export 'package:clappy/domain/entities/app_language.dart';
-export 'package:clappy/domain/entities/movie.dart';
-export 'package:clappy/domain/entities/movie_credit.dart';
-export 'package:clappy/domain/entities/person.dart';
-export 'package:clappy/domain/entities/theme_preference.dart';
-export 'package:clappy/domain/entities/tv_season.dart';
-export 'package:clappy/domain/entities/tv_show.dart';
-export 'package:clappy/domain/entities/video.dart';
