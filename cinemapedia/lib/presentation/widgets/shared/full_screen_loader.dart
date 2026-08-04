@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 
-const messages = <String>[
-  'Loading movies',
-  'Buying pop corns',
-  'Loading populars',
-  'Calling to my girlfriend',
-  'Almost there',
-  'This took longer than expected',
-];
+import '../../../l10n/app_localizations.dart';
 
-Stream<String> getLoadingMessages() {
+Stream<String> _getLoadingMessages(List<String> messages) {
   return Stream.periodic(const Duration(milliseconds: 1200), (step) {
-    return messages[step];
+    return messages[step % messages.length];
   });
 }
 
@@ -20,18 +13,28 @@ class FullScreenLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final messages = [
+      l10n.loadingMovies,
+      l10n.buyingPopcorns,
+      l10n.loadingPopulars,
+      l10n.callingGirlfriend,
+      l10n.almostThere,
+      l10n.tookLongerThanExpected,
+    ];
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Please wait'),
+          Text(l10n.pleaseWait),
           const SizedBox(height: 10),
           const CircularProgressIndicator(strokeWidth: 2),
           const SizedBox(height: 10),
           StreamBuilder(
-            stream: getLoadingMessages(),
+            stream: _getLoadingMessages(messages),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return const Text('Loading...');
+              if (!snapshot.hasData) return Text(l10n.loadingEllipsis);
               return Text(snapshot.data!);
             },
           ),

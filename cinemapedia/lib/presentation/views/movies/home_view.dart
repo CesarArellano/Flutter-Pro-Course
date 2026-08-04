@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../providers/providers.dart';
 import '../../widgets/widgets.dart';
 
@@ -28,6 +29,7 @@ class _HomeViewState extends ConsumerState<HomeView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final l10n = AppLocalizations.of(context)!;
     final initialLoading = ref.watch(initialLoadingProvider);
 
     if (initialLoading) {
@@ -46,12 +48,11 @@ class _HomeViewState extends ConsumerState<HomeView>
 
     return CustomScrollView(
       slivers: [
-        const SliverAppBar(
-          floating: true,
-          flexibleSpace: FlexibleSpaceBar(
-            titlePadding: EdgeInsets.zero,
-            title: CustomAppbar(),
-          ),
+        // Plain spacer, not a bar — CustomAppbar itself is mounted once by
+        // HomeScreen, overlaid on top of every tab. This just reserves the
+        // space so content starts below it, then scrolls up underneath.
+        SliverToBoxAdapter(
+          child: SizedBox(height: CustomAppbar.height(context)),
         ),
         SliverList(
           delegate: SliverChildListDelegate.fixed([
@@ -63,7 +64,7 @@ class _HomeViewState extends ConsumerState<HomeView>
                       (type) => Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: ChoiceChip(
-                          label: Text(type.label),
+                          label: Text(type.label(context)),
                           selected: contentType == type,
                           onSelected: (_) =>
                               ref.read(contentTypeProvider.notifier).state =
@@ -78,28 +79,28 @@ class _HomeViewState extends ConsumerState<HomeView>
             ...switch (contentType) {
               ContentType.movies => [
                 MovieHorizontalListview(
-                  title: 'In Theaters',
-                  subtitle: 'Monday 12',
+                  title: l10n.inTheaters,
+                  subtitle: l10n.mondaySubtitle,
                   movies: nowPlayingMovies,
                   loadNextPage: () => ref
                       .read(nowPlayingMoviesProvider.notifier)
                       .loadNextPage(),
                 ),
                 MovieHorizontalListview(
-                  title: 'Upcoming',
+                  title: l10n.upcoming,
                   movies: upcomingMovies,
                   loadNextPage: () =>
                       ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
                 ),
                 MovieHorizontalListview(
-                  title: 'Popular',
+                  title: l10n.popular,
                   movies: popularMovies,
                   loadNextPage: () =>
                       ref.read(popularMoviesProvider.notifier).loadNextPage(),
                 ),
                 MovieHorizontalListview(
-                  title: 'Top Rated',
-                  subtitle: 'Since ever',
+                  title: l10n.topRated,
+                  subtitle: l10n.sinceEverSubtitle,
                   movies: topRatedMovies,
                   loadNextPage: () =>
                       ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
@@ -107,26 +108,26 @@ class _HomeViewState extends ConsumerState<HomeView>
               ],
               ContentType.series => [
                 SeriesHorizontalListview(
-                  title: 'Airing Today',
+                  title: l10n.airingToday,
                   series: airingTodaySeries,
                   loadNextPage: () => ref
                       .read(airingTodaySeriesProvider.notifier)
                       .loadNextPage(),
                 ),
                 SeriesHorizontalListview(
-                  title: 'On The Air',
+                  title: l10n.onTheAir,
                   series: onTheAirSeries,
                   loadNextPage: () =>
                       ref.read(onTheAirSeriesProvider.notifier).loadNextPage(),
                 ),
                 SeriesHorizontalListview(
-                  title: 'Popular',
+                  title: l10n.popular,
                   series: popularSeries,
                   loadNextPage: () =>
                       ref.read(popularSeriesProvider.notifier).loadNextPage(),
                 ),
                 SeriesHorizontalListview(
-                  title: 'Top Rated',
+                  title: l10n.topRated,
                   series: topRatedSeries,
                   loadNextPage: () =>
                       ref.read(topRatedSeriesProvider.notifier).loadNextPage(),

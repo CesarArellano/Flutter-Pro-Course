@@ -13,8 +13,9 @@ typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
 class SearchMovieDelegate extends SearchDelegate<Movie?> {
   SearchMovieDelegate({
     required this.searchMovies,
+    required String searchFieldHint,
     this.initialMovies = const [],
-  }) : super(searchFieldLabel: 'Search movie');
+  }) : super(searchFieldLabel: searchFieldHint);
 
   final SearchMoviesCallback searchMovies;
   List<Movie> initialMovies;

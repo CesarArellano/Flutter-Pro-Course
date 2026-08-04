@@ -18,6 +18,7 @@ class SeriesMapNotifier extends StateNotifier<Map<String, TvShow>> {
     if (state[seriesId] != null) return;
 
     final series = await getSeries(seriesId);
+    if (!mounted) return;
 
     state = {...state, seriesId: series};
   }

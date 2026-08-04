@@ -11,6 +11,13 @@ import '../../../config/helpers/image_cache_dimensions.dart';
 /// Pass [cacheWidth]/[cacheHeight] instead when [width]/[height] is
 /// `double.infinity` (e.g. filling a parent that already has a fixed size) —
 /// an infinite value can't be used to compute a cache size.
+///
+/// Only ever one of `memCacheWidth`/`memCacheHeight` is ever sent to
+/// [CachedNetworkImage] (width preferred, height as a fallback when no usable
+/// width is available) — passing both tells the decoder to resize the bitmap
+/// to those *exact* pixel dimensions without preserving aspect ratio, which
+/// stretches/squishes the image before [fit] ever gets to crop it. Do not
+/// "fix" this by supplying both again.
 class AppNetworkImage extends StatelessWidget {
   const AppNetworkImage({
     super.key,
@@ -34,19 +41,21 @@ class AppNetworkImage extends StatelessWidget {
     final resolvedCacheWidth = cacheWidth ?? width;
     final resolvedCacheHeight = cacheHeight ?? height;
 
+    final cacheW = (resolvedCacheWidth == null || !resolvedCacheWidth.isFinite)
+        ? null
+        : cacheDimension(context, resolvedCacheWidth);
+    final cacheH =
+        (resolvedCacheHeight == null || !resolvedCacheHeight.isFinite)
+        ? null
+        : cacheDimension(context, resolvedCacheHeight);
+
     return CachedNetworkImage(
       imageUrl: imageUrl,
       width: width,
       height: height,
       fit: fit,
-      memCacheWidth:
-          (resolvedCacheWidth == null || !resolvedCacheWidth.isFinite)
-          ? null
-          : cacheDimension(context, resolvedCacheWidth),
-      memCacheHeight:
-          (resolvedCacheHeight == null || !resolvedCacheHeight.isFinite)
-          ? null
-          : cacheDimension(context, resolvedCacheHeight),
+      memCacheWidth: cacheW,
+      memCacheHeight: cacheW == null ? cacheH : null,
       fadeInDuration: const Duration(milliseconds: 200),
       placeholder: (context, url) => const ColoredBox(color: Colors.black12),
       errorWidget: (context, url, error) => Center(

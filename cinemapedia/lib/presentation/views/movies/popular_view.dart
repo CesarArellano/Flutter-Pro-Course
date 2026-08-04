@@ -19,19 +19,15 @@ class PopularViewState extends ConsumerState<PopularView>
 
     final contentType = ref.watch(contentTypeProvider);
 
-    return Scaffold(
-      body: Column(
-        children: [
-          const CustomAppbar(),
-          Expanded(
-            child: switch (contentType) {
-              ContentType.movies => _PopularMovies(),
-              ContentType.series => _PopularSeries(),
-            },
-          ),
-        ],
-      ),
-    );
+    // CustomAppbar is mounted once by HomeScreen, overlaid on top of every
+    // tab — this only needs to pad its own content so it starts below the
+    // bar, then scrolls up underneath its blur.
+    final barHeight = CustomAppbar.height(context);
+
+    return switch (contentType) {
+      ContentType.movies => _PopularMovies(topPadding: barHeight),
+      ContentType.series => _PopularSeries(topPadding: barHeight),
+    };
   }
 
   @override
@@ -39,6 +35,9 @@ class PopularViewState extends ConsumerState<PopularView>
 }
 
 class _PopularMovies extends ConsumerWidget {
+  const _PopularMovies({required this.topPadding});
+  final double topPadding;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final popularMovies = ref.watch(popularMoviesProvider);
@@ -51,11 +50,15 @@ class _PopularMovies extends ConsumerWidget {
       loadNextPage: () =>
           ref.read(popularMoviesProvider.notifier).loadNextPage(),
       movies: popularMovies,
+      topPadding: topPadding,
     );
   }
 }
 
 class _PopularSeries extends ConsumerWidget {
+  const _PopularSeries({required this.topPadding});
+  final double topPadding;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final popularSeries = ref.watch(popularSeriesProvider);
@@ -68,6 +71,7 @@ class _PopularSeries extends ConsumerWidget {
       loadNextPage: () =>
           ref.read(popularSeriesProvider.notifier).loadNextPage(),
       series: popularSeries,
+      topPadding: topPadding,
     );
   }
 }

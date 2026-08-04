@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fog_edge_blur/fog_edge_blur.dart';
+import 'package:fog_edge_blur/fog_edge_child.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -9,9 +11,11 @@ import '../../../config/extensions/null_extensions.dart';
 import '../../../domain/entities/actor.dart';
 import '../../../domain/entities/tv_season.dart';
 import '../../../domain/entities/tv_show.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../providers/series/series_cast_provider.dart';
 import '../../providers/series/series_info_provider.dart';
 import '../../widgets/shared/app_network_image.dart';
+import '../../widgets/shared/custom_appbar.dart';
 
 class SeriesScreen extends ConsumerStatefulWidget {
   const SeriesScreen({super.key, required this.seriesId});
@@ -45,12 +49,20 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
     }
 
     return Scaffold(
-      body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
-        slivers: [
-          _CustomSliverAppbar(series: series),
-          SliverToBoxAdapter(child: _SeriesDetails(series: series)),
-        ],
+      // No CustomAppbar here — this screen already has its own hero-image
+      // sliver header. Just the top-edge blur treatment, sized to match the
+      // same status-bar-plus-toolbar band CustomAppbar uses elsewhere.
+      body: FogEdgeBlur(
+        edgeAlign: EdgeAlign.top,
+        sigma: 20,
+        fogEdgeChild: FogEdgeChild(heightEdge: CustomAppbar.height(context)),
+        child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
+          slivers: [
+            _CustomSliverAppbar(series: series),
+            SliverToBoxAdapter(child: _SeriesDetails(series: series)),
+          ],
+        ),
       ),
     );
   }
@@ -115,6 +127,7 @@ class _SeriesDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final textStyles = Theme.of(context).textTheme;
     const TextStyle chipTextStyle = TextStyle(
@@ -142,7 +155,7 @@ class _SeriesDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      series.name ?? 'No title',
+                      series.name ?? l10n.noTitle,
                       style: textStyles.titleLarge,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
@@ -174,9 +187,9 @@ class _SeriesDetails extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         if (series.adult.value())
-                          const Chip(
+                          Chip(
                             backgroundColor: Colors.red,
-                            label: Text('+18', style: chipTextStyle),
+                            label: Text(l10n.adultTag, style: chipTextStyle),
                           ),
                       ],
                     ),
@@ -202,14 +215,16 @@ class _Overview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Overview',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          Text(
+            l10n.overview,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
           Text(series.overview.value(), textAlign: TextAlign.justify),
@@ -226,6 +241,7 @@ class _MoreDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
 
     final firstAirDate = series.firstAirDate;
@@ -237,9 +253,9 @@ class _MoreDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 10),
-          const Text(
-            'Details',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          Text(
+            l10n.details,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           if (genreIds.isNotEmpty)
@@ -259,25 +275,25 @@ class _MoreDetails extends StatelessWidget {
           if (genreIds.isNotEmpty) const SizedBox(height: 12),
           _DetailRow(
             icon: Icons.calendar_today_outlined,
-            label: 'First air date',
+            label: l10n.firstAirDate,
             value: firstAirDate != null
                 ? '${firstAirDate.day}-${firstAirDate.month}-${firstAirDate.year}'
-                : 'Unknown',
+                : l10n.unknown,
           ),
           _DetailRow(
             icon: Icons.video_library_outlined,
-            label: 'Seasons',
+            label: l10n.seasons,
             value: '${series.numberOfSeasons.value()}',
           ),
           _DetailRow(
             icon: Icons.movie_filter_outlined,
-            label: 'Episodes',
+            label: l10n.episodes,
             value: '${series.numberOfEpisodes.value()}',
           ),
           _DetailRow(
             icon: Icons.info_outline,
-            label: 'Status',
-            value: series.status.valueEmpty('Unknown'),
+            label: l10n.status,
+            value: series.status.valueEmpty(l10n.unknown),
           ),
           const SizedBox(height: 10),
         ],
@@ -331,6 +347,7 @@ class _SeriesCast extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final cast = ref.watch(castBySeriesProvider)[seriesId] ?? [];
 
     if (cast.isEmpty) {
@@ -340,11 +357,11 @@ class _SeriesCast extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            'Cast',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            l10n.cast,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 5),
@@ -367,6 +384,7 @@ class _CastCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return InkWell(
@@ -405,7 +423,7 @@ class _CastCard extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                actor.character.value('No-character'),
+                actor.character.value(l10n.noCharacter),
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
@@ -425,6 +443,7 @@ class _LastSeason extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
     final airDate = season.airDate;
 
@@ -434,9 +453,9 @@ class _LastSeason extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 10),
-          const Text(
-            'Last Season',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          Text(
+            l10n.lastSeason,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Row(
@@ -456,7 +475,7 @@ class _LastSeason extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      season.name.value('Season'),
+                      season.name.value(l10n.seasonFallbackName),
                       style: textTheme.titleMedium,
                     ),
                     const SizedBox(height: 4),
@@ -491,14 +510,14 @@ class _LastSeason extends StatelessWidget {
                           Text('${airDate.year}', style: textTheme.bodyMedium),
                         const SizedBox(width: 8),
                         Text(
-                          '${season.episodeCount.value()} episodes',
+                          l10n.episodesCount(season.episodeCount.value()),
                           style: textTheme.bodyMedium,
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      season.overview.valueEmpty('No overview available.'),
+                      season.overview.valueEmpty(l10n.noOverviewAvailable),
                       maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.bodyMedium,

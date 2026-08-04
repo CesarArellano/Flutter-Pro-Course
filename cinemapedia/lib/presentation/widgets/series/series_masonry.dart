@@ -9,9 +9,15 @@ class SeriesMasonry extends StatefulWidget {
     super.key,
     required this.series,
     required this.loadNextPage,
+    this.topPadding = 0,
   });
   final List<TvShow> series;
   final VoidCallback loadNextPage;
+
+  /// Extra top inset so the first row starts below an overlaid translucent
+  /// app bar — see [MovieMasonry.topPadding] for why this lives in the
+  /// scrollable's own padding rather than an outer widget.
+  final double topPadding;
 
   @override
   State<SeriesMasonry> createState() => _SeriesMasonryState();
@@ -37,6 +43,16 @@ class _SeriesMasonryState extends State<SeriesMasonry> {
   }
 
   @override
+  void didUpdateWidget(covariant SeriesMasonry oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // See SeriesHorizontalListview.didUpdateWidget for why this is needed:
+    // initState() won't rerun when Flutter reuses this State across
+    // rebuilds, so a language-triggered provider reset (list back to empty)
+    // would otherwise never re-trigger the lazy-load bootstrap.
+    if (widget.series.isEmpty) widget.loadNextPage();
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
@@ -48,28 +64,24 @@ class _SeriesMasonryState extends State<SeriesMasonry> {
       return const Center(child: CircularProgressIndicator(strokeWidth: 2));
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: MasonryGridView.count(
-        controller: _scrollController,
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        itemCount: widget.series.length,
-        itemBuilder: (context, index) {
-          final seriesPosterLink = SeriesPosterLink(
-            series: widget.series[index],
+    return MasonryGridView.count(
+      controller: _scrollController,
+      padding: EdgeInsets.fromLTRB(10, widget.topPadding, 10, 10),
+      crossAxisCount: 3,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+      itemCount: widget.series.length,
+      itemBuilder: (context, index) {
+        final seriesPosterLink = SeriesPosterLink(series: widget.series[index]);
+
+        if (index == 1) {
+          return Column(
+            children: [const SizedBox(height: 40), seriesPosterLink],
           );
+        }
 
-          if (index == 1) {
-            return Column(
-              children: [const SizedBox(height: 40), seriesPosterLink],
-            );
-          }
-
-          return seriesPosterLink;
-        },
-      ),
+        return seriesPosterLink;
+      },
     );
   }
 }

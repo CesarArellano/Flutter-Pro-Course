@@ -1,0 +1,79 @@
+{
+  "@@locale": "en",
+
+  "navHome": "Home",
+  "navPopulars": "Populars",
+  "navPeople": "People",
+  "navFavorites": "Favorites",
+
+  "searchFieldHint": "Search movie",
+  "preferencesTooltip": "Preferences",
+
+  "contentTypeMovies": "Movies",
+  "contentTypeSeries": "Series",
+
+  "overview": "Overview",
+  "details": "Details",
+  "cast": "Cast",
+  "moviesLabel": "Movies",
+  "biography": "Biography",
+  "lastSeason": "Last Season",
+  "videos": "Videos",
+  "recommendations": "Recommendations",
+
+  "releaseDate": "Release date",
+  "duration": "Duration",
+  "budget": "Budget",
+  "revenue": "Revenue",
+  "firstAirDate": "First air date",
+  "seasons": "Seasons",
+  "episodes": "Episodes",
+  "status": "Status",
+  "birthday": "Birthday",
+  "placeOfBirth": "Place of birth",
+  "adultTag": "+18",
+  "noTitle": "No title",
+  "unknown": "Unknown",
+  "unknownDepartment": "Unknown department",
+  "noCharacter": "No-character",
+  "noBiographyAvailable": "No biography available.",
+  "noOverviewAvailable": "No overview available.",
+  "episodesCount": "{count} episodes",
+  "@episodesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "seasonFallbackName": "Season",
+
+  "inTheaters": "In Theaters",
+  "mondaySubtitle": "Monday 12",
+  "upcoming": "Upcoming",
+  "popular": "Popular",
+  "topRated": "Top Rated",
+  "sinceEverSubtitle": "Since ever",
+  "airingToday": "Airing Today",
+  "onTheAir": "On The Air",
+
+  "pleaseWait": "Please wait",
+  "loadingEllipsis": "Loading...",
+  "loadingMovies": "Loading movies",
+  "buyingPopcorns": "Buying pop corns",
+  "loadingPopulars": "Loading populars",
+  "callingGirlfriend": "Calling to my girlfriend",
+  "almostThere": "Almost there",
+  "tookLongerThanExpected": "This took longer than expected",
+  "ohNo": "Ohh no!!",
+  "noFavoriteMovies": "You don't have favorite movies",
+  "startSearching": "Start searching",
+
+  "couldNotLoadContent": "Couldn't load content",
+
+  "preferencesTitle": "Preferences",
+  "themeLabel": "Theme",
+  "languageLabel": "Language",
+  "lightLabel": "Light",
+  "darkLabel": "Dark",
+  "englishLabel": "English",
+  "spanishLabel": "Español"
+}

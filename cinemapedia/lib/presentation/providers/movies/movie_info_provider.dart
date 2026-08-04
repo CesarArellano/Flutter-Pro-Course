@@ -29,6 +29,7 @@ class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
     if (state[movieId] != null) return;
 
     final movie = await getMovie(movieId);
+    if (!mounted) return;
 
     state = {...state, movieId: movie};
   }
@@ -42,6 +43,7 @@ class ActorsByMovieNotifier extends StateNotifier<Map<String, List<Actor>>> {
     if (state[movieId] != null) return;
 
     final actorList = await getActors(movieId);
+    if (!mounted) return;
 
     state = {...state, movieId: actorList};
   }

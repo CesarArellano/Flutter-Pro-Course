@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../providers/providers.dart';
 import '../widgets.dart';
 
@@ -20,23 +21,27 @@ class SimilarMovies extends ConsumerWidget {
     final similarMoviesFuture = ref.watch(similarMoviesProvider(movieId));
 
     return similarMoviesFuture.when(
-      data: (movies) => _Recomendations(movies: movies),
-      error: (_, _) =>
-          const Center(child: Text('No se pudo cargar películas similares')),
+      data: (movies) => _Recommendations(movies: movies),
+      error: (_, _) => Center(
+        child: Text(AppLocalizations.of(context)!.couldNotLoadContent),
+      ),
       loading: () =>
           const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
 }
 
-class _Recomendations extends StatelessWidget {
-  const _Recomendations({required this.movies});
+class _Recommendations extends StatelessWidget {
+  const _Recommendations({required this.movies});
   final List<Movie> movies;
 
   @override
   Widget build(BuildContext context) {
     if (movies.isEmpty) return const SizedBox();
 
-    return MovieHorizontalListview(title: 'Recomendations', movies: movies);
+    return MovieHorizontalListview(
+      title: AppLocalizations.of(context)!.recommendations,
+      movies: movies,
+    );
   }
 }

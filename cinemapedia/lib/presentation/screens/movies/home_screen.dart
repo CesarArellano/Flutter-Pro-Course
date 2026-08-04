@@ -53,10 +53,21 @@ class _HomeScreenState extends State<HomeScreen>
     }
 
     return Scaffold(
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
-        children: viewRoutes,
+      // CustomAppbar is mounted once here, overlaid above the PageView,
+      // instead of duplicated inside every tab — each tab only needs to pad
+      // its own scrollable content by CustomAppbar.height(context) so it
+      // starts below the bar and scrolls up underneath its blur.
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              children: viewRoutes,
+            ),
+          ),
+          const Positioned(top: 0, left: 0, right: 0, child: CustomAppbar()),
+        ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         pageViewIndex: widget.pageIndex,

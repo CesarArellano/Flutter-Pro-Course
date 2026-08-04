@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../providers/providers.dart';
 
 final FutureProviderFamily<List<Video>, int> videosFromMovieProvider =
@@ -22,8 +23,9 @@ class VideosFromMovie extends ConsumerWidget {
 
     return moviesFromVideo.when(
       data: (videos) => _VideosList(videos: videos),
-      error: (_, _) =>
-          const Center(child: Text('No se pudo cargar películas similares')),
+      error: (_, _) => Center(
+        child: Text(AppLocalizations.of(context)!.couldNotLoadContent),
+      ),
       loading: () =>
           const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
@@ -45,12 +47,11 @@ class _VideosList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ignore: prefer_const_constructors
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: const Text(
-            'Videos',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          child: Text(
+            AppLocalizations.of(context)!.videos,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
         ),
 

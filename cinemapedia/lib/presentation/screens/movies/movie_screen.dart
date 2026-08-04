@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fog_edge_blur/fog_edge_blur.dart';
+import 'package:fog_edge_blur/fog_edge_child.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../config/extensions/null_extensions.dart';
 import '../../../domain/entities/actor.dart';
 import '../../../domain/entities/movie.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../providers/movies/movie_info_provider.dart';
 import '../../providers/providers.dart';
 import '../../widgets/widgets.dart';
@@ -42,12 +45,20 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
     }
 
     return Scaffold(
-      body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
-        slivers: [
-          _CustomSliverAppbar(movie: movie),
-          SliverToBoxAdapter(child: _MovieDetails(movie: movie)),
-        ],
+      // No CustomAppbar here — this screen already has its own hero-image
+      // sliver header. Just the top-edge blur treatment, sized to match the
+      // same status-bar-plus-toolbar band CustomAppbar uses elsewhere.
+      body: FogEdgeBlur(
+        edgeAlign: EdgeAlign.top,
+        sigma: 20,
+        fogEdgeChild: FogEdgeChild(heightEdge: kToolbarHeight),
+        child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
+          slivers: [
+            _CustomSliverAppbar(movie: movie),
+            SliverToBoxAdapter(child: _MovieDetails(movie: movie)),
+          ],
+        ),
       ),
     );
   }
@@ -157,6 +168,7 @@ class _MovieDetails extends StatelessWidget {
         VideosFromMovie(movieId: movie.id.value()),
         const SizedBox(height: 4),
         SimilarMovies(movieId: movie.id.value()),
+        const SizedBox(height: 12),
       ],
     );
   }
@@ -169,6 +181,7 @@ class HeaderDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final textStyles = Theme.of(context).textTheme;
     const TextStyle chipTextStyle = TextStyle(
@@ -193,7 +206,7 @@ class HeaderDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  movie.title ?? 'No title',
+                  movie.title ?? l10n.noTitle,
                   style: textStyles.titleLarge,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -225,9 +238,9 @@ class HeaderDetails extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     if (movie.adult.value())
-                      const Chip(
+                      Chip(
                         backgroundColor: Colors.red,
-                        label: Text('+18', style: chipTextStyle),
+                        label: Text(l10n.adultTag, style: chipTextStyle),
                       ),
                   ],
                 ),
@@ -246,14 +259,16 @@ class _Overview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Overview',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          Text(
+            l10n.overview,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 5),
           Text(movie.overview.value(), textAlign: TextAlign.justify),
@@ -270,6 +285,7 @@ class _MoreDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colors = Theme.of(context).colorScheme;
     final numberFormater = NumberFormat("\$#,##0.00 USD", "en_US");
 
@@ -284,9 +300,9 @@ class _MoreDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 10),
-          const Text(
-            'Details',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          Text(
+            l10n.details,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           if (genreIds.isNotEmpty)
@@ -306,17 +322,25 @@ class _MoreDetails extends StatelessWidget {
           if (genreIds.isNotEmpty) const SizedBox(height: 12),
           _DetailRow(
             icon: Icons.calendar_today_outlined,
-            label: 'Release date',
+            label: l10n.releaseDate,
             value:
                 '${releaseDate.day}-${releaseDate.month}-${releaseDate.year}',
           ),
           _DetailRow(
             icon: Icons.timer_outlined,
-            label: 'Duration',
+            label: l10n.duration,
             value: '${durationToString(movie.runtime ?? 0)}h',
           ),
-          _DetailRow(icon: Icons.attach_money, label: 'Budget', value: budget),
-          _DetailRow(icon: Icons.trending_up, label: 'Revenue', value: revenue),
+          _DetailRow(
+            icon: Icons.attach_money,
+            label: l10n.budget,
+            value: budget,
+          ),
+          _DetailRow(
+            icon: Icons.trending_up,
+            label: l10n.revenue,
+            value: revenue,
+          ),
           const SizedBox(height: 10),
         ],
       ),
@@ -398,6 +422,7 @@ class _CastCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return InkWell(
@@ -436,7 +461,7 @@ class _CastCard extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                actor.character.value('No-character'),
+                actor.character.value(l10n.noCharacter),
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,

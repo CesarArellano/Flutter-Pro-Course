@@ -36,6 +36,11 @@ final appRouter = GoRouter(
             return SeriesScreen(seriesId: seriesId);
           },
         ),
+        GoRoute(
+          path: 'preferences',
+          name: PreferencesScreen.name,
+          builder: (_, state) => const PreferencesScreen(),
+        ),
       ],
     ),
     GoRoute(path: '/', redirect: (_, _) => '/home/0'),

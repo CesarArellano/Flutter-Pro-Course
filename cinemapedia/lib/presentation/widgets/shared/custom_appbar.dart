@@ -1,13 +1,22 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/movie.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../delegates/search_movie_delegate.dart';
 import '../../providers/providers.dart';
 
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
+
+  /// Total height (status bar + bar content) — used by screens that overlay
+  /// this bar on top of scrolling content (see [HomeScreen]) to pad that
+  /// content so it starts below the bar, then scrolls underneath it.
+  static double height(BuildContext context) =>
+      MediaQuery.paddingOf(context).top + kToolbarHeight;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,38 +24,55 @@ class CustomAppbar extends ConsumerWidget {
     final colors = theme.colorScheme;
     final titleStyle = theme.textTheme.titleMedium;
 
-    return SafeArea(
-      bottom: false,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: [
-            Icon(Icons.movie_outlined, color: colors.primary),
-            const SizedBox(width: 5),
-            Text('Cinemapedia', style: titleStyle),
-            const Spacer(),
-            IconButton(
-              onPressed: () {
-                final searchedMovies = ref.read(searchedMoviesProvider);
-                final searchQuery = ref.read(searchQueryProvider);
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          color: colors.surface.withValues(alpha: 0.7),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SafeArea(
+            bottom: false,
+            child: SizedBox(
+              height: kToolbarHeight,
+              child: Row(
+                children: [
+                  Icon(Icons.movie_outlined, color: colors.primary),
+                  const SizedBox(width: 5),
+                  Text('Cinemapedia', style: titleStyle),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      final searchedMovies = ref.read(searchedMoviesProvider);
+                      final searchQuery = ref.read(searchQueryProvider);
 
-                showSearch<Movie?>(
-                  query: searchQuery,
-                  context: context,
-                  delegate: SearchMovieDelegate(
-                    initialMovies: searchedMovies,
-                    searchMovies: ref
-                        .read(searchedMoviesProvider.notifier)
-                        .searchMoviesByQuery,
+                      showSearch<Movie?>(
+                        query: searchQuery,
+                        context: context,
+                        delegate: SearchMovieDelegate(
+                          initialMovies: searchedMovies,
+                          searchFieldHint: AppLocalizations.of(
+                            context,
+                          )!.searchFieldHint,
+                          searchMovies: ref
+                              .read(searchedMoviesProvider.notifier)
+                              .searchMoviesByQuery,
+                        ),
+                      ).then((movie) {
+                        if (movie == null || !context.mounted) return;
+                        context.push('/home/0/movie/${movie.id}');
+                      });
+                    },
+                    icon: const Icon(Icons.search),
                   ),
-                ).then((movie) {
-                  if (movie == null || !context.mounted) return;
-                  context.push('/home/0/movie/${movie.id}');
-                });
-              },
-              icon: const Icon(Icons.search),
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!.preferencesTooltip,
+                    onPressed: () => context.push('/home/0/preferences'),
+                    icon: const Icon(Icons.settings_outlined),
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );

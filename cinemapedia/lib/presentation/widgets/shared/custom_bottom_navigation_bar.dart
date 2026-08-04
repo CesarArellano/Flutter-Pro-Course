@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../l10n/app_localizations.dart';
+
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key, required this.pageViewIndex});
 
@@ -12,23 +14,28 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: pageViewIndex,
       onTap: (value) => onItemTapped(context, value),
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_max), label: 'Home'),
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.label_outline),
-          label: 'Populars',
+          icon: const Icon(Icons.home_max),
+          label: l10n.navHome,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.people_outline),
-          label: 'People',
+          icon: const Icon(Icons.label_outline),
+          label: l10n.navPopulars,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_outline),
-          label: 'Favorites',
+          icon: const Icon(Icons.people_outline),
+          label: l10n.navPeople,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.favorite_outline),
+          label: l10n.navFavorites,
         ),
       ],
     );

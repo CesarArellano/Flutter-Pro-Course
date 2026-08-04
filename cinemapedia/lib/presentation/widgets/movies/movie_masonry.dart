@@ -9,9 +9,16 @@ class MovieMasonry extends StatefulWidget {
     super.key,
     required this.movies,
     required this.loadNextPage,
+    this.topPadding = 0,
   });
   final List<Movie> movies;
   final VoidCallback loadNextPage;
+
+  /// Extra top inset so the first row starts below an overlaid translucent
+  /// app bar (see [CustomAppbar]) instead of the grid's own [padding] living
+  /// outside the scrollable — that would just shrink the viewport rather
+  /// than letting content scroll underneath the bar.
+  final double topPadding;
 
   @override
   State<MovieMasonry> createState() => _MovieMasonryState();
@@ -40,26 +47,24 @@ class _MovieMasonryState extends State<MovieMasonry> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: MasonryGridView.count(
-        controller: _scrollController,
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        itemCount: widget.movies.length,
-        itemBuilder: (context, index) {
-          final moviePosterLink = MoviePosterLink(movie: widget.movies[index]);
+    return MasonryGridView.count(
+      controller: _scrollController,
+      padding: EdgeInsets.fromLTRB(10, widget.topPadding, 10, 10),
+      crossAxisCount: 3,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+      itemCount: widget.movies.length,
+      itemBuilder: (context, index) {
+        final moviePosterLink = MoviePosterLink(movie: widget.movies[index]);
 
-          if (index == 1) {
-            return Column(
-              children: [const SizedBox(height: 40), moviePosterLink],
-            );
-          }
+        if (index == 1) {
+          return Column(
+            children: [const SizedBox(height: 40), moviePosterLink],
+          );
+        }
 
-          return moviePosterLink;
-        },
-      ),
+        return moviePosterLink;
+      },
     );
   }
 }

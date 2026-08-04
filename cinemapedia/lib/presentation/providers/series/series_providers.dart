@@ -48,6 +48,7 @@ class SeriesNotifier extends StateNotifier<List<TvShow>> {
     currentPage++;
 
     final List<TvShow> series = await fetchMoreSeries(page: currentPage);
+    if (!mounted) return;
     state = [...state, ...series];
     await Future.delayed(const Duration(milliseconds: 300));
     isLoading = false;

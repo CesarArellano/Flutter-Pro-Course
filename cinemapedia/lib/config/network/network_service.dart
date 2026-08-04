@@ -12,8 +12,8 @@ import 'retry_interceptor.dart';
 /// paths and payloads.
 class NetworkService {
   NetworkService({
+    required Map<String, dynamic> defaultQueryParameters,
     String baseUrl = _baseUrl,
-    Map<String, dynamic> defaultQueryParameters = const {'language': 'es-MX'},
     int maxRetries = 3,
   }) : _dio = Dio(
          BaseOptions(

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/extensions/null_extensions.dart';
 import '../../../domain/entities/movie_credit.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../providers/providers.dart';
 import '../shared/app_network_image.dart';
 
@@ -23,8 +24,9 @@ class PersonMovieCredits extends ConsumerWidget {
 
     return creditsFuture.when(
       data: (credits) => _CreditsList(credits: credits),
-      error: (_, _) =>
-          const Center(child: Text('No se pudieron cargar las películas')),
+      error: (_, _) => Center(
+        child: Text(AppLocalizations.of(context)!.couldNotLoadContent),
+      ),
       loading: () =>
           const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
@@ -42,11 +44,11 @@ class _CreditsList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            'Movies',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            AppLocalizations.of(context)!.moviesLabel,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 5),
@@ -108,7 +110,9 @@ class _CreditCard extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                credit.character.value('No-character'),
+                credit.character.value(
+                  AppLocalizations.of(context)!.noCharacter,
+                ),
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,

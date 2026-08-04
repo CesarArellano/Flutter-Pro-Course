@@ -20,6 +20,7 @@ class ActorsBySeriesNotifier extends StateNotifier<Map<String, List<Actor>>> {
     if (state[seriesId] != null) return;
 
     final cast = await getCast(seriesId);
+    if (!mounted) return;
 
     state = {...state, seriesId: cast};
   }

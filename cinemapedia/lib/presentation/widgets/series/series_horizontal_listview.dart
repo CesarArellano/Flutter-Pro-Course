@@ -48,6 +48,17 @@ class _SeriesHorizontalListviewState extends State<SeriesHorizontalListview> {
   }
 
   @override
+  void didUpdateWidget(covariant SeriesHorizontalListview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // initState() only fires once per State object; Flutter reuses this same
+    // State (calling didUpdateWidget instead) across rebuilds at the same
+    // tree position. When a language switch recreates the underlying
+    // provider, widget.series resets to empty but initState never reruns —
+    // without this, the lazy-load bootstrap above would never re-fire.
+    if (widget.series.isEmpty) widget.loadNextPage?.call();
+  }
+
+  @override
   void dispose() {
     scrollController.dispose();
     super.dispose();

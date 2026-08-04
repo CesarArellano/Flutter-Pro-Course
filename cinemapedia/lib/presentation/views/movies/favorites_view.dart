@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../providers/providers.dart';
 import '../../widgets/widgets.dart';
 
@@ -45,6 +46,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final l10n = AppLocalizations.of(context)!;
     final favoriteMovies = ref.watch(favoriteMoviesProvider).values.toList();
     final colors = Theme.of(context).colorScheme;
 
@@ -59,23 +61,27 @@ class _FavoritesViewState extends ConsumerState<FavoritesView>
               color: colors.primary,
             ),
             Text(
-              'Ohh no!!',
+              l10n.ohNo,
               style: TextStyle(fontSize: 30, color: colors.primary),
             ),
-            const Text(
-              "You don't have favorite movies",
-              style: TextStyle(fontSize: 20),
-            ),
+            Text(l10n.noFavoriteMovies, style: const TextStyle(fontSize: 20)),
             const SizedBox(height: 20),
             FilledButton.tonal(
               onPressed: () => context.go('/home/0'),
-              child: const Text('Start searching'),
+              child: Text(l10n.startSearching),
             ),
           ],
         ),
       );
     }
 
-    return MovieMasonry(movies: favoriteMovies, loadNextPage: loadNextPage);
+    // CustomAppbar is mounted once by HomeScreen, overlaid on top of every
+    // tab — this only needs to pad its own content so it starts below the
+    // bar, then scrolls up underneath its blur.
+    return MovieMasonry(
+      movies: favoriteMovies,
+      loadNextPage: loadNextPage,
+      topPadding: CustomAppbar.height(context),
+    );
   }
 }

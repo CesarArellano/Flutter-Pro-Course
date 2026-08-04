@@ -9,9 +9,15 @@ class PersonMasonry extends StatefulWidget {
     super.key,
     required this.people,
     required this.loadNextPage,
+    this.topPadding = 0,
   });
   final List<Person> people;
   final VoidCallback loadNextPage;
+
+  /// Extra top inset so the first row starts below an overlaid translucent
+  /// app bar — see [MovieMasonry.topPadding] for why this lives in the
+  /// scrollable's own padding rather than an outer widget.
+  final double topPadding;
 
   @override
   State<PersonMasonry> createState() => _PersonMasonryState();
@@ -40,17 +46,14 @@ class _PersonMasonryState extends State<PersonMasonry> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: MasonryGridView.count(
-        controller: _scrollController,
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        itemCount: widget.people.length,
-        itemBuilder: (context, index) =>
-            PersonCard(person: widget.people[index]),
-      ),
+    return MasonryGridView.count(
+      controller: _scrollController,
+      padding: EdgeInsets.fromLTRB(10, widget.topPadding, 10, 10),
+      crossAxisCount: 3,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+      itemCount: widget.people.length,
+      itemBuilder: (context, index) => PersonCard(person: widget.people[index]),
     );
   }
 }

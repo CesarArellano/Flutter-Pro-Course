@@ -18,6 +18,7 @@ class PersonMapNotifier extends StateNotifier<Map<String, Person>> {
     if (state[personId] != null) return;
 
     final person = await getPerson(personId);
+    if (!mounted) return;
 
     state = {...state, personId: person};
   }
